@@ -7,7 +7,8 @@ export interface Auth {
 
 export interface BreadcrumbItem {
     title: string;
-    href: string;
+    url: string;
+    current?: boolean;
 }
 
 export interface NavGroup {
@@ -27,6 +28,7 @@ export interface SharedData {
     quote: { message: string; author: string };
     auth: Auth;
     sidebarOpen: boolean;
+    breadcrumbs?: BreadcrumbItem[];
     [key: string]: unknown;
 }
 
