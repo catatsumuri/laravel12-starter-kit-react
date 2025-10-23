@@ -3,7 +3,9 @@ import { send } from '@/routes/verification';
 import { type BreadcrumbItem, type SharedData } from '@/types';
 import { Transition } from '@headlessui/react';
 import { Form, Head, Link, usePage } from '@inertiajs/react';
+import { useState } from 'react';
 
+import AvatarUpload from '@/components/avatar-upload';
 import DeleteUser from '@/components/delete-user';
 import HeadingSmall from '@/components/heading-small';
 import InputError from '@/components/input-error';
@@ -29,6 +31,7 @@ export default function Profile({
     status?: string;
 }) {
     const { auth } = usePage<SharedData>().props;
+    const [avatarFile, setAvatarFile] = useState<File | null>(null);
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
@@ -43,6 +46,16 @@ export default function Profile({
 
                     <Form
                         {...ProfileController.update.form()}
+                        transform={(data) => {
+                            const formData = new FormData();
+                            Object.entries(data).forEach(([key, value]) => {
+                                formData.append(key, value as string);
+                            });
+                            if (avatarFile) {
+                                formData.append('avatar', avatarFile);
+                            }
+                            return formData;
+                        }}
                         options={{
                             preserveScroll: true,
                         }}
@@ -50,6 +63,13 @@ export default function Profile({
                     >
                         {({ processing, recentlySuccessful, errors }) => (
                             <>
+                                <AvatarUpload
+                                    currentAvatar={auth.user.avatar}
+                                    userName={auth.user.name}
+                                    onFileSelect={setAvatarFile}
+                                    error={errors.avatar}
+                                />
+
                                 <div className="grid gap-2">
                                     <Label htmlFor="name">Name</Label>
 
