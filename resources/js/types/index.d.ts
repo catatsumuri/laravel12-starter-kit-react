@@ -24,6 +24,8 @@ export interface NavItem {
 
 export interface Features {
     twoFactorAuthentication: boolean;
+    appearanceSettings: boolean;
+    defaultAppearance: 'light' | 'dark' | 'system';
 }
 
 export interface SharedData {

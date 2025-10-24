@@ -10,7 +10,10 @@ import { type NavItem } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
 import { type PropsWithChildren, useMemo } from 'react';
 
-const getSidebarNavItems = (twoFactorEnabled: boolean): NavItem[] => [
+const getSidebarNavItems = (
+    twoFactorEnabled: boolean,
+    appearanceSettingsEnabled: boolean,
+): NavItem[] => [
     {
         title: 'Profile',
         href: edit(),
@@ -30,18 +33,26 @@ const getSidebarNavItems = (twoFactorEnabled: boolean): NavItem[] => [
               },
           ]
         : []),
-    {
-        title: 'Appearance',
-        href: editAppearance(),
-        icon: null,
-    },
+    ...(appearanceSettingsEnabled
+        ? [
+              {
+                  title: 'Appearance',
+                  href: editAppearance(),
+                  icon: null,
+              },
+          ]
+        : []),
 ];
 
 export default function SettingsLayout({ children }: PropsWithChildren) {
     const { features } = usePage().props;
     const sidebarNavItems = useMemo(
-        () => getSidebarNavItems(features.twoFactorAuthentication),
-        [features.twoFactorAuthentication],
+        () =>
+            getSidebarNavItems(
+                features.twoFactorAuthentication,
+                features.appearanceSettings,
+            ),
+        [features.twoFactorAuthentication, features.appearanceSettings],
     );
 
     // When server-side rendering, we only render the layout on the client...

@@ -1,3 +1,4 @@
+import { usePage } from '@inertiajs/react';
 import { useCallback, useEffect, useState } from 'react';
 
 export type Appearance = 'light' | 'dark' | 'system';
@@ -35,48 +36,79 @@ const mediaQuery = () => {
     return window.matchMedia('(prefers-color-scheme: dark)');
 };
 
-const handleSystemThemeChange = () => {
-    const currentAppearance = localStorage.getItem('appearance') as Appearance;
-    applyTheme(currentAppearance || 'system');
+const handleSystemThemeChange = (
+    defaultAppearance: Appearance = 'system',
+    appearanceSettingsEnabled: boolean = true,
+) => {
+    if (!appearanceSettingsEnabled) {
+        applyTheme(defaultAppearance);
+    } else {
+        const currentAppearance = localStorage.getItem(
+            'appearance',
+        ) as Appearance;
+        applyTheme(currentAppearance || defaultAppearance);
+    }
 };
 
-export function initializeTheme() {
-    const savedAppearance =
-        (localStorage.getItem('appearance') as Appearance) || 'system';
+export function initializeTheme(
+    defaultAppearance: Appearance = 'system',
+    appearanceSettingsEnabled: boolean = true,
+) {
+    // If appearance settings are disabled, always use default and ignore user preferences
+    const savedAppearance = appearanceSettingsEnabled
+        ? (localStorage.getItem('appearance') as Appearance) ||
+          defaultAppearance
+        : defaultAppearance;
 
     applyTheme(savedAppearance);
 
     // Add the event listener for system theme changes...
-    mediaQuery()?.addEventListener('change', handleSystemThemeChange);
+    mediaQuery()?.addEventListener('change', () =>
+        handleSystemThemeChange(defaultAppearance, appearanceSettingsEnabled),
+    );
 }
 
 export function useAppearance() {
-    const [appearance, setAppearance] = useState<Appearance>('system');
+    const { features } = usePage().props;
+    const defaultAppearance = features.defaultAppearance || 'system';
+    const appearanceSettingsEnabled = features.appearanceSettings ?? true;
+    const [appearance, setAppearance] = useState<Appearance>(defaultAppearance);
 
-    const updateAppearance = useCallback((mode: Appearance) => {
-        setAppearance(mode);
+    const updateAppearance = useCallback(
+        (mode: Appearance) => {
+            setAppearance(mode);
 
-        // Store in localStorage for client-side persistence...
-        localStorage.setItem('appearance', mode);
+            // Only store preferences if appearance settings are enabled
+            if (appearanceSettingsEnabled) {
+                // Store in localStorage for client-side persistence...
+                localStorage.setItem('appearance', mode);
 
-        // Store in cookie for SSR...
-        setCookie('appearance', mode);
+                // Store in cookie for SSR...
+                setCookie('appearance', mode);
+            }
 
-        applyTheme(mode);
-    }, []);
+            applyTheme(mode);
+        },
+        [appearanceSettingsEnabled],
+    );
 
     useEffect(() => {
-        const savedAppearance = localStorage.getItem(
-            'appearance',
-        ) as Appearance | null;
-        updateAppearance(savedAppearance || 'system');
+        // If appearance settings are disabled, always use default and ignore saved preferences
+        const savedAppearance = appearanceSettingsEnabled
+            ? (localStorage.getItem('appearance') as Appearance | null)
+            : null;
 
-        return () =>
-            mediaQuery()?.removeEventListener(
-                'change',
-                handleSystemThemeChange,
+        updateAppearance(savedAppearance || defaultAppearance);
+
+        const listener = () =>
+            handleSystemThemeChange(
+                defaultAppearance,
+                appearanceSettingsEnabled,
             );
-    }, [updateAppearance]);
+        mediaQuery()?.addEventListener('change', listener);
+
+        return () => mediaQuery()?.removeEventListener('change', listener);
+    }, [updateAppearance, defaultAppearance, appearanceSettingsEnabled]);
 
     return { appearance, updateAppearance } as const;
 }
