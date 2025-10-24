@@ -19,7 +19,11 @@ class AvatarController extends Controller
             abort(404, 'Avatar not found');
         }
 
-        return response()->file($media->getPath(), [
+        // Try to get the thumb conversion, fallback to original if it doesn't exist
+        $thumbPath = $media->getPath('thumb');
+        $path = file_exists($thumbPath) ? $thumbPath : $media->getPath();
+
+        return response()->file($path, [
             'Content-Type' => $media->mime_type,
             'Cache-Control' => 'public, max-age=604800',
         ]);

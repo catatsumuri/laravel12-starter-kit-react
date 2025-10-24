@@ -3,7 +3,7 @@ import { send } from '@/routes/verification';
 import { type BreadcrumbItem, type SharedData } from '@/types';
 import { Transition } from '@headlessui/react';
 import { Form, Head, Link, usePage } from '@inertiajs/react';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 
 import AvatarUpload from '@/components/avatar-upload';
 import DeleteUser from '@/components/delete-user';
@@ -32,6 +32,7 @@ export default function Profile({
 }) {
     const { auth } = usePage<SharedData>().props;
     const [avatarFile, setAvatarFile] = useState<File | null>(null);
+    const avatarUploadRef = useRef<{ clearSelection: () => void }>(null);
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
@@ -58,12 +59,16 @@ export default function Profile({
                         }}
                         options={{
                             preserveScroll: true,
+                            onSuccess: () => {
+                                avatarUploadRef.current?.clearSelection();
+                            },
                         }}
                         className="space-y-6"
                     >
                         {({ processing, recentlySuccessful, errors }) => (
                             <>
                                 <AvatarUpload
+                                    ref={avatarUploadRef}
                                     currentAvatar={auth.user.avatar}
                                     userName={auth.user.name}
                                     onFileSelect={setAvatarFile}

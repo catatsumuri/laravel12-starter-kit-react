@@ -7,8 +7,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
+use Spatie\Image\Enums\Fit;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class User extends Authenticatable implements HasMedia
 {
@@ -67,8 +69,22 @@ class User extends Authenticatable implements HasMedia
     public function registerMediaCollections(): void
     {
         $this->addMediaCollection('avatar')
-            ->singleFile();
+            ->singleFile()
+            ->acceptsMimeTypes(['image/jpeg', 'image/png', 'image/gif', 'image/webp']);
         // ->useDisk(config('media-library.avatar_disk'));
+    }
+
+    /**
+     * Register the media conversions for the user.
+     */
+    public function registerMediaConversions(?Media $media = null): void
+    {
+        $this->addMediaConversion('thumb')
+            ->fit(Fit::Crop, 200, 200)
+            ->sharpen(10)
+            ->format('jpg')
+            ->performOnCollections('avatar')
+            ->nonQueued();
     }
 
     /**
@@ -78,6 +94,10 @@ class User extends Authenticatable implements HasMedia
     {
         $media = $this->getFirstMedia('avatar');
 
-        return $media ? route('avatar.show', $this) : null;
+        if (! $media) {
+            return null;
+        }
+
+        return route('avatar.show', $this).'?v='.$media->updated_at->timestamp;
     }
 }
