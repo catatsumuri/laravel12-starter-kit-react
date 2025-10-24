@@ -84,3 +84,27 @@ test('users are rate limited', function () {
 
     $response->assertTooManyRequests();
 });
+
+test('login screen displays password toggle when enabled', function () {
+    config(['ui.show_password_toggle' => true]);
+
+    $response = $this->get(route('login'));
+
+    $response->assertStatus(200);
+    $response->assertInertia(fn ($page) => $page
+        ->component('auth/login')
+        ->where('showPasswordToggle', true)
+    );
+});
+
+test('login screen hides password toggle when disabled', function () {
+    config(['ui.show_password_toggle' => false]);
+
+    $response = $this->get(route('login'));
+
+    $response->assertStatus(200);
+    $response->assertInertia(fn ($page) => $page
+        ->component('auth/login')
+        ->where('showPasswordToggle', false)
+    );
+});

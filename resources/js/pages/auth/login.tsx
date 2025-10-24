@@ -10,13 +10,27 @@ import { register } from '@/routes';
 import { store } from '@/routes/login';
 import { request } from '@/routes/password';
 import { Form, Head } from '@inertiajs/react';
+import { Eye, EyeOff } from 'lucide-react';
+import { useState } from 'react';
 
 interface LoginProps {
     status?: string;
     canResetPassword: boolean;
+    showPasswordToggle: boolean;
 }
 
-export default function Login({ status, canResetPassword }: LoginProps) {
+export default function Login({
+    status,
+    canResetPassword,
+    showPasswordToggle,
+}: LoginProps) {
+    const [showPassword, setShowPassword] = useState(false);
+
+    const getPasswordFieldType = () => {
+        if (!showPasswordToggle) return 'password';
+        return showPassword ? 'text' : 'password';
+    };
+
     return (
         <AuthLayout
             title="Log in to your account"
@@ -60,15 +74,48 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                                         </TextLink>
                                     )}
                                 </div>
-                                <Input
-                                    id="password"
-                                    type="password"
-                                    name="password"
-                                    required
-                                    tabIndex={2}
-                                    autoComplete="current-password"
-                                    placeholder="Password"
-                                />
+                                <div className="relative">
+                                    <Input
+                                        id="password"
+                                        type={getPasswordFieldType()}
+                                        name="password"
+                                        required
+                                        tabIndex={2}
+                                        autoComplete="current-password"
+                                        placeholder="Password"
+                                        className={
+                                            showPasswordToggle ? 'pr-10' : ''
+                                        }
+                                    />
+                                    {showPasswordToggle && (
+                                        <button
+                                            type="button"
+                                            onClick={() =>
+                                                setShowPassword(!showPassword)
+                                            }
+                                            className="absolute top-1/2 right-3 -translate-y-1/2 text-muted-foreground transition-colors hover:text-foreground"
+                                            aria-label={
+                                                showPassword
+                                                    ? 'Hide password'
+                                                    : 'Show password'
+                                            }
+                                            aria-pressed={showPassword}
+                                            data-test="password-toggle"
+                                        >
+                                            {showPassword ? (
+                                                <EyeOff
+                                                    className="h-4 w-4"
+                                                    aria-hidden="true"
+                                                />
+                                            ) : (
+                                                <Eye
+                                                    className="h-4 w-4"
+                                                    aria-hidden="true"
+                                                />
+                                            )}
+                                        </button>
+                                    )}
+                                </div>
                                 <InputError message={errors.password} />
                             </div>
 
