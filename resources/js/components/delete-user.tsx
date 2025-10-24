@@ -13,11 +13,17 @@ import {
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Form } from '@inertiajs/react';
+import { type SharedData } from '@/types';
+import { Form, usePage } from '@inertiajs/react';
 import { useRef } from 'react';
 
 export default function DeleteUser() {
+    const { features } = usePage<SharedData>().props;
     const passwordInput = useRef<HTMLInputElement>(null);
+
+    if (!features.accountDeletion) {
+        return null;
+    }
 
     return (
         <div className="space-y-6">

@@ -22,10 +22,16 @@ export interface NavItem {
     isActive?: boolean;
 }
 
+export interface Features {
+    registration: boolean;
+    accountDeletion: boolean;
+}
+
 export interface SharedData {
     name: string;
     quote: { message: string; author: string };
     auth: Auth;
+    features: Features;
     sidebarOpen: boolean;
     [key: string]: unknown;
 }
