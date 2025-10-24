@@ -15,4 +15,17 @@ return [
 
     'show_password_toggle' => env('SHOW_PASSWORD_TOGGLE', true),
 
+    /*
+    |--------------------------------------------------------------------------
+    | Disable Welcome Page
+    |--------------------------------------------------------------------------
+    |
+    | When this value is set to true, the welcome page will be disabled and
+    | guest users will be redirected to the login page. Authenticated users
+    | will continue to be redirected to the dashboard.
+    |
+    */
+
+    'disable_welcome_page' => env('DISABLE_WELCOME_PAGE', false),
+
 ];

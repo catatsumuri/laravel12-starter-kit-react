@@ -4,6 +4,9 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 Route::get('/', function () {
+    if (config('ui.disable_welcome_page')) {
+        return redirect()->route('login');
+    }
     return Inertia::render('welcome');
 })->name('home');
 
