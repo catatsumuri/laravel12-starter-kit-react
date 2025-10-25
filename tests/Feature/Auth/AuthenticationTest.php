@@ -84,3 +84,36 @@ test('users are rate limited', function () {
 
     $response->assertTooManyRequests();
 });
+
+test('last login timestamp is updated on successful login', function () {
+    $user = User::factory()->withoutTwoFactor()->create([
+        'last_login_at' => null,
+    ]);
+
+    expect($user->last_login_at)->toBeNull();
+
+    $this->post(route('login.store'), [
+        'email' => $user->email,
+        'password' => 'password',
+    ]);
+
+    $user->refresh();
+
+    expect($user->last_login_at)->not->toBeNull();
+    expect($user->last_login_at)->toBeInstanceOf(\Illuminate\Support\Carbon::class);
+});
+
+test('last login timestamp is not updated on failed login', function () {
+    $user = User::factory()->create([
+        'last_login_at' => null,
+    ]);
+
+    $this->post(route('login.store'), [
+        'email' => $user->email,
+        'password' => 'wrong-password',
+    ]);
+
+    $user->refresh();
+
+    expect($user->last_login_at)->toBeNull();
+});
