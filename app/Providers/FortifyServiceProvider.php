@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
+use Illuminate\Auth\Events\Login;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
@@ -18,7 +20,10 @@ class FortifyServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->singleton(
+            \Laravel\Fortify\Contracts\LogoutResponse::class,
+            \App\Http\Responses\LogoutResponse::class
+        );
     }
 
     /**
@@ -27,6 +32,7 @@ class FortifyServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->configureViews();
+        $this->configureEvents();
         $this->configureRateLimiting();
     }
 
@@ -47,6 +53,16 @@ class FortifyServiceProvider extends ServiceProvider
         Fortify::twoFactorChallengeView(fn () => Inertia::render('auth/two-factor-challenge'));
 
         Fortify::confirmPasswordView(fn () => Inertia::render('auth/confirm-password'));
+    }
+
+    /**
+     * Configure authentication events.
+     */
+    private function configureEvents(): void
+    {
+        Event::listen(Login::class, function (Login $event) {
+            session()->flash('success', __('Welcome back!'));
+        });
     }
 
     /**
