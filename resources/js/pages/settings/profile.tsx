@@ -23,10 +23,8 @@ const breadcrumbs: BreadcrumbItem[] = [
 
 export default function Profile({
     mustVerifyEmail,
-    status,
 }: {
     mustVerifyEmail: boolean;
-    status?: string;
 }) {
     const { auth } = usePage<SharedData>().props;
 
@@ -104,15 +102,6 @@ export default function Profile({
                                                     verification email.
                                                 </Link>
                                             </p>
-
-                                            {status ===
-                                                'verification-link-sent' && (
-                                                <div className="mt-2 text-sm font-medium text-green-600">
-                                                    A new verification link has
-                                                    been sent to your email
-                                                    address.
-                                                </div>
-                                            )}
                                         </div>
                                     )}
 

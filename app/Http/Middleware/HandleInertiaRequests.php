@@ -38,6 +38,14 @@ class HandleInertiaRequests extends Middleware
     {
         [$message, $author] = str(Inspiring::quotes()->random())->explode('-');
 
+        $flash = array_filter([
+            'success' => $request->session()->get('success'),
+            'error' => $request->session()->get('error'),
+            'info' => $request->session()->get('info'),
+            'warning' => $request->session()->get('warning'),
+            'status' => $request->session()->get('status'),
+        ], fn ($value) => $value !== null);
+
         return [
             ...parent::share($request),
             'name' => config('app.name'),
@@ -46,6 +54,7 @@ class HandleInertiaRequests extends Middleware
                 'user' => $request->user(),
             ],
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
+            'flash' => empty($flash) ? null : $flash,
         ];
     }
 }
