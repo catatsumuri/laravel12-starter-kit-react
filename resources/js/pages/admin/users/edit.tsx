@@ -30,11 +30,11 @@ export default function Edit({ user }: Props) {
 
             <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
                 <div className="flex items-center gap-4">
-                    <Link href={index()}>
-                        <Button variant="outline" size="sm">
+                    <Button variant="outline" size="sm" asChild>
+                        <Link href={index()}>
                             <ArrowLeft className="size-4" />
-                        </Button>
-                    </Link>
+                        </Link>
+                    </Button>
                     <h1 className="text-2xl font-semibold">Edit User</h1>
                 </div>
 
@@ -89,15 +89,16 @@ export default function Edit({ user }: Props) {
                                     <Button type="submit" disabled={processing}>
                                         Update User
                                     </Button>
-                                    <Link href={index()}>
-                                        <Button
-                                            type="button"
-                                            variant="outline"
-                                            disabled={processing}
-                                        >
+                                    <Button
+                                        type="button"
+                                        variant="outline"
+                                        disabled={processing}
+                                        asChild
+                                    >
+                                        <Link href={index()}>
                                             Cancel
-                                        </Button>
-                                    </Link>
+                                        </Link>
+                                    </Button>
                                 </div>
                             </>
                         )}

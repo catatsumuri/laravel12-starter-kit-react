@@ -44,17 +44,17 @@ export default function Show({ user }: Props) {
             <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
                 <div className="flex items-center justify-between">
                     <div className="flex items-center gap-4">
-                        <Link href={index()}>
-                            <Button variant="outline" size="sm">
+                        <Button variant="outline" size="sm" asChild>
+                            <Link href={index()}>
                                 <ArrowLeft className="size-4" />
-                            </Button>
-                        </Link>
+                            </Link>
+                        </Button>
                         <h1 className="text-2xl font-semibold">User Details</h1>
                     </div>
                     <div className="flex gap-2">
-                        <Link href={edit(user)}>
-                            <Button>Edit User</Button>
-                        </Link>
+                        <Button asChild>
+                            <Link href={edit(user)}>Edit User</Link>
+                        </Button>
                         <Dialog>
                             <DialogTrigger asChild>
                                 <Button

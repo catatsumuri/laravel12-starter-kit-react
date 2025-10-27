@@ -66,12 +66,12 @@ export default function Index({ users, filters }: Props) {
             <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                     <h1 className="text-2xl font-semibold">Users</h1>
-                    <Link href={create()}>
-                        <Button>
+                    <Button asChild>
+                        <Link href={create()}>
                             <Plus className="mr-2 size-4" />
                             Add User
-                        </Button>
-                    </Link>
+                        </Link>
+                    </Button>
                 </div>
 
                 {flash?.success && (
@@ -111,6 +111,9 @@ export default function Index({ users, filters }: Props) {
                                     Email
                                 </th>
                                 <th className="px-4 py-3 text-left text-sm font-medium">
+                                    Role
+                                </th>
+                                <th className="px-4 py-3 text-left text-sm font-medium">
                                     Created At
                                 </th>
                                 <th className="px-4 py-3 text-right text-sm font-medium">
@@ -122,7 +125,7 @@ export default function Index({ users, filters }: Props) {
                             {users.data.length === 0 ? (
                                 <tr>
                                     <td
-                                        colSpan={4}
+                                        colSpan={5}
                                         className="px-4 py-8 text-center text-sm text-muted-foreground"
                                     >
                                         No users found.
@@ -146,20 +149,22 @@ export default function Index({ users, filters }: Props) {
                                             {user.email}
                                         </td>
                                         <td className="px-4 py-3 text-sm">
+                                            <span className="inline-flex items-center rounded-full bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700 ring-1 ring-inset ring-blue-700/10">
+                                                {user.roles?.[0]?.name || 'user'}
+                                            </span>
+                                        </td>
+                                        <td className="px-4 py-3 text-sm">
                                             {new Date(
                                                 user.created_at,
                                             ).toLocaleDateString()}
                                         </td>
                                         <td className="px-4 py-3 text-right">
                                             <div className="flex justify-end gap-2">
-                                                <Link href={edit(user)}>
-                                                    <Button
-                                                        variant="outline"
-                                                        size="sm"
-                                                    >
+                                                <Button variant="outline" size="sm" asChild>
+                                                    <Link href={edit(user)}>
                                                         <Pencil className="size-4" />
-                                                    </Button>
-                                                </Link>
+                                                    </Link>
+                                                </Button>
                                                 <Dialog>
                                                     <DialogTrigger asChild>
                                                         <Button

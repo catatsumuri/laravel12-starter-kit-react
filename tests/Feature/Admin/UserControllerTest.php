@@ -2,11 +2,18 @@
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Spatie\Permission\Models\Role;
 
 uses(RefreshDatabase::class);
 
+beforeEach(function () {
+    Role::create(['name' => 'admin']);
+    Role::create(['name' => 'user']);
+});
+
 it('displays users index', function () {
     $admin = User::factory()->create();
+    $admin->syncRoles(['admin']);
     User::factory()->count(3)->create();
 
     $response = $this->actingAs($admin)->get('/admin/users');
@@ -20,6 +27,7 @@ it('displays users index', function () {
 
 it('displays create form', function () {
     $admin = User::factory()->create();
+    $admin->syncRoles(['admin']);
 
     $response = $this->actingAs($admin)->get('/admin/users/create');
 
@@ -29,6 +37,7 @@ it('displays create form', function () {
 
 it('creates user with valid data', function () {
     $admin = User::factory()->create();
+    $admin->syncRoles(['admin']);
     $userData = [
         'name' => 'Test User',
         'email' => 'test@example.com',
@@ -44,6 +53,7 @@ it('creates user with valid data', function () {
 
 it('fails to create user with invalid data', function () {
     $admin = User::factory()->create();
+    $admin->syncRoles(['admin']);
 
     $response = $this->actingAs($admin)->post('/admin/users', []);
 
@@ -52,6 +62,7 @@ it('fails to create user with invalid data', function () {
 
 it('fails to create user with duplicate email', function () {
     $admin = User::factory()->create();
+    $admin->syncRoles(['admin']);
     User::factory()->create(['email' => 'existing@example.com']);
 
     $response = $this->actingAs($admin)->post('/admin/users', [
@@ -65,6 +76,7 @@ it('fails to create user with duplicate email', function () {
 
 it('displays user details', function () {
     $admin = User::factory()->create();
+    $admin->syncRoles(['admin']);
     $user = User::factory()->create();
 
     $response = $this->actingAs($admin)->get("/admin/users/{$user->id}");
@@ -79,6 +91,7 @@ it('displays user details', function () {
 
 it('displays edit form', function () {
     $admin = User::factory()->create();
+    $admin->syncRoles(['admin']);
     $user = User::factory()->create();
 
     $response = $this->actingAs($admin)->get("/admin/users/{$user->id}/edit");
@@ -93,6 +106,7 @@ it('displays edit form', function () {
 
 it('updates user with valid data', function () {
     $admin = User::factory()->create();
+    $admin->syncRoles(['admin']);
     $user = User::factory()->create();
     $updateData = [
         'name' => 'Updated Name',
@@ -108,6 +122,7 @@ it('updates user with valid data', function () {
 
 it('updates user password when provided', function () {
     $admin = User::factory()->create();
+    $admin->syncRoles(['admin']);
     $user = User::factory()->create();
     $updateData = [
         'name' => $user->name,
@@ -124,6 +139,7 @@ it('updates user password when provided', function () {
 
 it('fails to update user with invalid data', function () {
     $admin = User::factory()->create();
+    $admin->syncRoles(['admin']);
     $user = User::factory()->create();
 
     $response = $this->actingAs($admin)->put("/admin/users/{$user->id}", [
@@ -136,6 +152,7 @@ it('fails to update user with invalid data', function () {
 
 it('fails to update user with duplicate email', function () {
     $admin = User::factory()->create();
+    $admin->syncRoles(['admin']);
     $user1 = User::factory()->create(['email' => 'user1@example.com']);
     $user2 = User::factory()->create(['email' => 'user2@example.com']);
 
@@ -149,6 +166,7 @@ it('fails to update user with duplicate email', function () {
 
 it('deletes user', function () {
     $admin = User::factory()->create();
+    $admin->syncRoles(['admin']);
     $user = User::factory()->create();
 
     $response = $this->actingAs($admin)->delete("/admin/users/{$user->id}");
@@ -160,6 +178,7 @@ it('deletes user', function () {
 
 it('prevents self deletion', function () {
     $admin = User::factory()->create();
+    $admin->syncRoles(['admin']);
 
     $response = $this->actingAs($admin)->delete("/admin/users/{$admin->id}");
 
@@ -170,6 +189,7 @@ it('prevents self deletion', function () {
 
 it('filters users by search', function () {
     $admin = User::factory()->create(['name' => 'Admin User']);
+    $admin->syncRoles(['admin']);
     User::factory()->create(['name' => 'John Doe']);
     User::factory()->create(['name' => 'Jane Smith']);
 

@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
+use Spatie\Permission\Models\Role;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
@@ -32,6 +33,18 @@ class UserFactory extends Factory
             'two_factor_recovery_codes' => Str::random(10),
             'two_factor_confirmed_at' => now(),
         ];
+    }
+
+    /**
+     * Configure the model factory.
+     */
+    public function configure(): static
+    {
+        return $this->afterCreating(function ($user) {
+            if (Role::where('name', 'user')->exists()) {
+                $user->assignRole('user');
+            }
+        });
     }
 
     /**

@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/app-layout';
-import { index, store } from '@/routes/admin/users';
+import { index, create, store } from '@/routes/admin/users';
 import { type BreadcrumbItem } from '@/types';
 import { Form, Head, Link } from '@inertiajs/react';
 import { ArrowLeft } from 'lucide-react';
@@ -26,11 +26,11 @@ export default function Create() {
 
             <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
                 <div className="flex items-center gap-4">
-                    <Link href={index()}>
-                        <Button variant="outline" size="sm">
+                    <Button variant="outline" size="sm" asChild>
+                        <Link href={index()}>
                             <ArrowLeft className="size-4" />
-                        </Button>
-                    </Link>
+                        </Link>
+                    </Button>
                     <h1 className="text-2xl font-semibold">Create User</h1>
                 </div>
 
@@ -79,15 +79,16 @@ export default function Create() {
                                     <Button type="submit" disabled={processing}>
                                         Create User
                                     </Button>
-                                    <Link href={index()}>
-                                        <Button
-                                            type="button"
-                                            variant="outline"
-                                            disabled={processing}
-                                        >
+                                    <Button
+                                        type="button"
+                                        variant="outline"
+                                        disabled={processing}
+                                        asChild
+                                    >
+                                        <Link href={index()}>
                                             Cancel
-                                        </Button>
-                                    </Link>
+                                        </Link>
+                                    </Button>
                                 </div>
                             </>
                         )}
