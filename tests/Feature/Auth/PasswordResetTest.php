@@ -17,9 +17,10 @@ test('reset password link can be requested', function () {
 
     $user = User::factory()->create();
 
-    $this->post(route('password.email'), ['email' => $user->email]);
+    $response = $this->post(route('password.email'), ['email' => $user->email]);
 
     Notification::assertSentTo($user, ResetPassword::class);
+    $response->assertSessionHas('success', 'A reset link will be sent if the account exists.');
 });
 
 test('reset password screen can be rendered', function () {
@@ -55,7 +56,8 @@ test('password can be reset with valid token', function () {
 
         $response
             ->assertSessionHasNoErrors()
-            ->assertRedirect(route('login'));
+            ->assertRedirect(route('login'))
+            ->assertSessionHas('success', 'Password reset successfully.');
 
         return true;
     });

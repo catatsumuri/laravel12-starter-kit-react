@@ -21,7 +21,9 @@ test('users can authenticate using the login screen', function () {
     ]);
 
     $this->assertAuthenticated();
-    $response->assertRedirect(route('dashboard', absolute: false));
+    $response
+        ->assertRedirect(route('dashboard', absolute: false))
+        ->assertSessionHas('success', 'Welcome back!');
 });
 
 test('users with two factor enabled are redirected to two factor challenge', function () {
@@ -69,7 +71,9 @@ test('users can logout', function () {
     $response = $this->actingAs($user)->post(route('logout'));
 
     $this->assertGuest();
-    $response->assertRedirect(route('home'));
+    $response
+        ->assertRedirect(route('home'))
+        ->assertSessionHas('success', 'You have been logged out successfully.');
 });
 
 test('users are rate limited', function () {
