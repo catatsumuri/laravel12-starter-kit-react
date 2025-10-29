@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Inertia\Middleware;
 
 class HandleInertiaRequests extends Middleware
@@ -38,6 +39,29 @@ class HandleInertiaRequests extends Middleware
     {
         [$message, $author] = str(Inspiring::quotes()->random())->explode('-');
 
+        $notifications = [];
+        if ($request->user()) {
+            $rawNotifications = DB::table('notifications')
+                ->where('notifiable_type', 'App\\Models\\User')
+                ->where('notifiable_id', $request->user()->id)
+                ->orderBy('created_at', 'desc')
+                ->limit(20)
+                ->get();
+
+            $notifications = $rawNotifications->map(function ($notification) {
+                $data = json_decode($notification->data, true);
+
+                return [
+                    'id' => $notification->id,
+                    'type' => $data['type'] ?? 'info',
+                    'title' => $data['title'] ?? '',
+                    'message' => $data['message'] ?? '',
+                    'time' => \Carbon\Carbon::parse($notification->created_at)->diffForHumans(),
+                    'read' => $notification->read_at !== null,
+                ];
+            })->toArray();
+        }
+
         return [
             ...parent::share($request),
             'name' => config('app.name'),
@@ -46,6 +70,7 @@ class HandleInertiaRequests extends Middleware
                 'user' => $request->user(),
             ],
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
+            'notifications' => $notifications,
         ];
     }
 }

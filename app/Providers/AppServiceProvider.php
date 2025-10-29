@@ -19,6 +19,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        // Listeners in app/Listeners are automatically discovered in Laravel 11
     }
 }
