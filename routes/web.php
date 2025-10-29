@@ -9,6 +9,11 @@ Route::get('/', function () {
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', function () {
+        // Redirect admin users to admin dashboard
+        if (auth()->user()->hasRole('admin')) {
+            return redirect()->route('admin.dashboard');
+        }
+
         return Inertia::render('dashboard');
     })->name('dashboard');
 });

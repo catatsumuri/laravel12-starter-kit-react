@@ -6,11 +6,6 @@ use Spatie\Permission\Models\Role;
 
 uses(RefreshDatabase::class);
 
-beforeEach(function () {
-    Role::create(['name' => 'admin']);
-    Role::create(['name' => 'user']);
-});
-
 it('displays users index', function () {
     $admin = User::factory()->create();
     $admin->syncRoles(['admin']);

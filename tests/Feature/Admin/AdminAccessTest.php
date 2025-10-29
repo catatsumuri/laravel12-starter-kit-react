@@ -6,11 +6,6 @@ use Spatie\Permission\Models\Role;
 
 uses(RefreshDatabase::class);
 
-beforeEach(function () {
-    Role::create(['name' => 'admin']);
-    Role::create(['name' => 'user']);
-});
-
 it('allows admin users to access admin routes', function () {
     $admin = User::factory()->create();
     $admin->syncRoles(['admin']);
@@ -39,7 +34,7 @@ it('shows admin navigation only to admin users', function () {
     $admin = User::factory()->withoutTwoFactor()->create();
     $admin->syncRoles(['admin']); // Use syncRoles to replace default role
 
-    $response = $this->actingAs($admin)->get('/dashboard');
+    $response = $this->actingAs($admin)->get('/admin/dashboard');
 
     $response->assertOk();
     $response->assertInertia(fn ($page) => $page

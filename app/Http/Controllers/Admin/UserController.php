@@ -68,6 +68,69 @@ class UserController extends Controller
     }
 
     /**
+     * Display the activity log for the specified user.
+     *
+     * このメソッドは、指定されたユーザー「が」実行した操作を表示します。
+     * （ユーザー「に対して」行われた操作ではありません）
+     */
+    public function activities(User $user): Response
+    {
+        // ユーザーが実行したアクティビティログを取得
+        $activities = \Spatie\Activitylog\Models\Activity::causedBy($user)
+            ->with(['subject', 'causer'])  // 操作対象と実行者のモデル情報を含める
+            ->orderBy('created_at', 'desc')
+            ->paginate(20)
+            ->through(function ($activity) {
+                $props = $activity->properties ?? collect();
+                $attrs = $props['attributes'] ?? [];
+                $old = $props['old'] ?? [];
+
+                // properties から名前を抽出するヘルパー
+                $pick = function (array $arr) {
+                    foreach (['name', 'title', 'label', 'subject', 'heading', 'email'] as $k) {
+                        if (! empty($arr[$k]) && is_string($arr[$k])) {
+                            return $arr[$k];
+                        }
+                    }
+
+                    return null;
+                };
+
+                $subjectLabel = $pick($attrs) ?? $pick($old);
+
+                return [
+                    'id' => $activity->id,
+                    'description' => $activity->description,
+                    'properties' => $activity->properties,
+                    'created_at' => $activity->created_at,
+                    'subject_type' => class_basename($activity->subject_type),
+                    'subject_id' => $activity->subject_id,
+                    'subject' => $activity->subject ? [
+                        'type' => class_basename($activity->subject_type),
+                        'id' => $activity->subject->id,
+                        'name' => $activity->subject->name ?? null,
+                        'email' => $activity->subject->email ?? null,
+                    ] : null,
+                    'subject_label' => $subjectLabel,
+                    'causer' => $activity->causer ? [
+                        'id' => $activity->causer->id,
+                        'name' => $activity->causer->name ?? null,
+                        'email' => $activity->causer->email ?? null,
+                    ] : [
+                        'id' => null,
+                        'name' => 'System',
+                        'email' => null,
+                    ],
+                ];
+            });
+
+        return Inertia::render('admin/users/activities', [
+            'user' => $user,
+            'activities' => $activities,
+        ]);
+    }
+
+    /**
      * Show the form for editing the specified user.
      */
     public function edit(User $user): Response

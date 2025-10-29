@@ -12,7 +12,7 @@ import AppLayout from '@/layouts/app-layout';
 import { show, edit, index, destroy } from '@/routes/admin/users';
 import { type BreadcrumbItem, type User } from '@/types';
 import { Head, Link, router, usePage } from '@inertiajs/react';
-import { ArrowLeft, Mail, User as UserIcon, Calendar, Trash2 } from 'lucide-react';
+import { ArrowLeft, Mail, User as UserIcon, Calendar, Trash2, Activity } from 'lucide-react';
 
 interface Props {
     user: User;
@@ -52,6 +52,12 @@ export default function Show({ user }: Props) {
                         <h1 className="text-2xl font-semibold">User Details</h1>
                     </div>
                     <div className="flex gap-2">
+                        <Button variant="outline" asChild>
+                            <Link href={`/admin/users/${user.id}/activities`}>
+                                <Activity className="size-4 mr-2" />
+                                Activity Log
+                            </Link>
+                        </Button>
                         <Button asChild>
                             <Link href={edit(user)}>Edit User</Link>
                         </Button>

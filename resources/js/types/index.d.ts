@@ -41,3 +41,31 @@ export interface User {
     updated_at: string;
     [key: string]: unknown; // This allows for additional properties...
 }
+
+export interface ActivityLogCauser {
+    id: number;
+    name: string;
+    email: string;
+}
+
+export interface ActivityLogSubject {
+    type: string;
+    id: number;
+    name?: string;
+    email?: string;
+}
+
+export interface ActivityLog {
+    id: number;
+    description: string;
+    properties: {
+        attributes?: Record<string, unknown>;
+        old?: Record<string, unknown>;
+    };
+    created_at: string;
+    subject_type: string;
+    subject_id: number;
+    subject: ActivityLogSubject | null;
+    subject_label?: string | null;
+    causer?: ActivityLogCauser | null;
+}
