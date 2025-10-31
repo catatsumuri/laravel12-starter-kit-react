@@ -84,21 +84,35 @@ export default function Login({
                                         tabIndex={2}
                                         autoComplete="current-password"
                                         placeholder="Password"
-                                        className={showPasswordToggle ? 'pr-10' : ''}
+                                        className={
+                                            showPasswordToggle ? 'pr-10' : ''
+                                        }
                                     />
                                     {showPasswordToggle && (
                                         <button
                                             type="button"
-                                            onClick={() => setShowPassword(!showPassword)}
+                                            onClick={() =>
+                                                setShowPassword(!showPassword)
+                                            }
                                             className="absolute top-1/2 right-3 -translate-y-1/2 text-muted-foreground transition-colors hover:text-foreground"
-                                            aria-label={showPassword ? 'Hide password' : 'Show password'}
+                                            aria-label={
+                                                showPassword
+                                                    ? 'Hide password'
+                                                    : 'Show password'
+                                            }
                                             aria-pressed={showPassword}
                                             data-test="password-toggle"
                                         >
                                             {showPassword ? (
-                                                <EyeOff className="h-4 w-4" aria-hidden="true" />
+                                                <EyeOff
+                                                    className="h-4 w-4"
+                                                    aria-hidden="true"
+                                                />
                                             ) : (
-                                                <Eye className="h-4 w-4" aria-hidden="true" />
+                                                <Eye
+                                                    className="h-4 w-4"
+                                                    aria-hidden="true"
+                                                />
                                             )}
                                         </button>
                                     )}

@@ -55,7 +55,7 @@ test('email verification status is unchanged when the email address is unchanged
 
 test('user can delete their account', function () {
     Config::set('user.account_deletion_enabled', true);
-    
+
     $user = User::factory()->create();
 
     $response = $this
@@ -75,7 +75,7 @@ test('user can delete their account', function () {
 
 test('correct password must be provided to delete account', function () {
     Config::set('user.account_deletion_enabled', true);
-    
+
     $user = User::factory()->create();
 
     $response = $this

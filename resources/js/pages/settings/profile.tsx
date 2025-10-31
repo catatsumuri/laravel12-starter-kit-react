@@ -7,11 +7,10 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/app-layout';
 import SettingsLayout from '@/layouts/settings/layout';
+import { formatDateTime, formatRelativeTime } from '@/lib/utils';
 import { send } from '@/routes/verification';
 import { type SharedData } from '@/types';
-import { Transition } from '@headlessui/react';
 import { Form, Head, Link, usePage } from '@inertiajs/react';
-import { formatDateTime, formatRelativeTime } from '@/lib/utils';
 
 export default function Profile({
     mustVerifyEmail,

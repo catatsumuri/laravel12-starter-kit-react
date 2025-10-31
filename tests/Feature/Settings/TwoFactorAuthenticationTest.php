@@ -95,7 +95,7 @@ test('two factor feature flag controls route access', function () {
     $response = $this->actingAs($user)
         ->withSession(['auth.password_confirmed_at' => time()])
         ->get(route('two-factor.show'));
-    
+
     // Only assert OK if the route actually exists when feature is enabled
     if (\Illuminate\Support\Facades\Route::has('two-factor.show')) {
         $response->assertOk();
@@ -156,7 +156,7 @@ test('two factor feature flag is shared with inertia', function () {
 
 test('two factor page works when feature is enabled', function () {
     config(['features.two_factor_authentication' => true]);
-    
+
     $user = User::factory()->create();
 
     $response = $this->actingAs($user)

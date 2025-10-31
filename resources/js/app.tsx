@@ -6,7 +6,6 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { toast } from 'sonner';
 import { Toaster } from './components/ui/sonner';
-import { initializeTheme } from './hooks/use-appearance';
 import { initializeTheme, type Appearance } from './hooks/use-appearance';
 
 declare global {

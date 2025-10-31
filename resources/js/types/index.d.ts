@@ -38,6 +38,7 @@ export interface SharedData {
     features: Features;
     sidebarOpen: boolean;
     breadcrumbs?: BreadcrumbItem[];
+    notifications?: Notification[];
     [key: string]: unknown;
 }
 
@@ -52,4 +53,13 @@ export interface User {
     created_at: string;
     updated_at: string;
     [key: string]: unknown; // This allows for additional properties...
+}
+
+export interface Notification {
+    id: string;
+    type: 'success' | 'error' | 'warning' | 'info';
+    title: string;
+    message: string;
+    time: string;
+    read: boolean;
 }

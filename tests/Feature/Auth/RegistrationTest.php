@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Config;
 
 test('registration screen can be rendered', function () {
     Config::set('user.registration_enabled', true);
-    
+
     $response = $this->get(route('register'));
 
     $response->assertStatus(200);
@@ -12,7 +12,7 @@ test('registration screen can be rendered', function () {
 
 test('new users can register', function () {
     Config::set('user.registration_enabled', true);
-    
+
     $response = $this->post(route('register.store'), [
         'name' => 'Test User',
         'email' => 'test@example.com',

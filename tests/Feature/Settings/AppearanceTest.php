@@ -6,7 +6,7 @@ use Inertia\Testing\AssertableInertia as Assert;
 uses(\Illuminate\Foundation\Testing\RefreshDatabase::class);
 
 test('appearance page can be rendered', function () {
-    if (!config('features.appearance_settings', false)) {
+    if (! config('features.appearance_settings', false)) {
         $this->markTestSkipped('Appearance settings feature is disabled');
     }
 
@@ -22,7 +22,7 @@ test('appearance page can be rendered', function () {
 });
 
 test('default appearance is shared with inertia', function () {
-    if (!config('features.appearance_settings', false)) {
+    if (! config('features.appearance_settings', false)) {
         $this->markTestSkipped('Appearance settings feature is disabled');
     }
 
@@ -41,7 +41,7 @@ test('default appearance is shared with inertia', function () {
 });
 
 test('custom default appearance is respected', function () {
-    if (!config('features.appearance_settings', false)) {
+    if (! config('features.appearance_settings', false)) {
         $this->markTestSkipped('Appearance settings feature is disabled');
     }
 
@@ -71,7 +71,7 @@ test('custom default appearance is respected', function () {
 });
 
 test('appearance middleware uses configured default', function () {
-    if (!config('features.appearance_settings', false)) {
+    if (! config('features.appearance_settings', false)) {
         $this->markTestSkipped('Appearance settings feature is disabled');
     }
 
@@ -161,7 +161,7 @@ test('appearance middleware ignores user preferences when feature disabled', fun
 
 test('appearance page works when feature is enabled', function () {
     config(['features.appearance_settings' => true]);
-    
+
     $user = User::factory()->create();
 
     $response = $this->actingAs($user)
