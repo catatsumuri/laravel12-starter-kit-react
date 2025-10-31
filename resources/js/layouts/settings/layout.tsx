@@ -7,10 +7,13 @@ import { edit } from '@/routes/profile';
 import { show } from '@/routes/two-factor';
 import { edit as editPassword } from '@/routes/user-password';
 import { type NavItem } from '@/types';
-import { Link } from '@inertiajs/react';
-import { type PropsWithChildren } from 'react';
+import { Link, usePage } from '@inertiajs/react';
+import { type PropsWithChildren, useMemo } from 'react';
 
-const sidebarNavItems: NavItem[] = [
+const getSidebarNavItems = (
+    twoFactorEnabled: boolean,
+    appearanceSettingsEnabled: boolean,
+): NavItem[] => [
     {
         title: 'Profile',
         href: edit(),
@@ -21,19 +24,37 @@ const sidebarNavItems: NavItem[] = [
         href: editPassword(),
         icon: null,
     },
-    {
-        title: 'Two-Factor Auth',
-        href: show(),
-        icon: null,
-    },
-    {
-        title: 'Appearance',
-        href: editAppearance(),
-        icon: null,
-    },
+    ...(twoFactorEnabled
+        ? [
+              {
+                  title: 'Two-Factor Auth',
+                  href: show(),
+                  icon: null,
+              },
+          ]
+        : []),
+    ...(appearanceSettingsEnabled
+        ? [
+              {
+                  title: 'Appearance',
+                  href: editAppearance(),
+                  icon: null,
+              },
+          ]
+        : []),
 ];
 
 export default function SettingsLayout({ children }: PropsWithChildren) {
+    const { features } = usePage().props;
+    const sidebarNavItems = useMemo(
+        () =>
+            getSidebarNavItems(
+                features.twoFactorAuthentication,
+                features.appearanceSettings,
+            ),
+        [features.twoFactorAuthentication, features.appearanceSettings],
+    );
+
     // When server-side rendering, we only render the layout on the client...
     if (typeof window === 'undefined') {
         return null;

@@ -23,10 +23,17 @@ export interface NavItem {
     isActive?: boolean;
 }
 
+export interface Features {
+    twoFactorAuthentication: boolean;
+    appearanceSettings: boolean;
+    defaultAppearance: 'light' | 'dark' | 'system';
+}
+
 export interface SharedData {
     name: string;
     quote: { message: string; author: string };
     auth: Auth;
+    features: Features;
     sidebarOpen: boolean;
     breadcrumbs?: BreadcrumbItem[];
     [key: string]: unknown;

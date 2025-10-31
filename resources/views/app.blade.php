@@ -16,6 +16,12 @@
                         document.documentElement.classList.add('dark');
                     }
                 }
+
+                // Store feature flags for client-side initialization
+                window.__FEATURE_FLAGS__ = {
+                    defaultAppearance: '{{ config('features.default_appearance', 'system') }}',
+                    appearanceSettings: {{ config('features.appearance_settings', true) ? 'true' : 'false' }}
+                };
             })();
         </script>
 

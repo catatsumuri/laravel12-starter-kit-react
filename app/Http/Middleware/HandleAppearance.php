@@ -16,7 +16,14 @@ class HandleAppearance
      */
     public function handle(Request $request, Closure $next): Response
     {
-        View::share('appearance', $request->cookie('appearance') ?? 'system');
+        $defaultAppearance = config('features.default_appearance', 'system');
+
+        // If appearance settings are disabled, always use default and ignore user preferences
+        if (! config('features.appearance_settings', true)) {
+            View::share('appearance', $defaultAppearance);
+        } else {
+            View::share('appearance', $request->cookie('appearance') ?? $defaultAppearance);
+        }
 
         return $next($request);
     }
