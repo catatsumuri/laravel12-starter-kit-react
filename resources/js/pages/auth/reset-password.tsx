@@ -1,4 +1,4 @@
-import NewPasswordController from '@/actions/App/Http/Controllers/Auth/NewPasswordController';
+import { update } from '@/routes/password';
 import { Form, Head } from '@inertiajs/react';
 
 import InputError from '@/components/input-error';
@@ -25,16 +25,14 @@ export default function ResetPassword({ token, email }: ResetPasswordProps) {
             <Head title={t('auth.reset_password.head_title')} />
 
             <Form
-                {...NewPasswordController.store.form()}
+                {...update.form()}
                 transform={(data) => ({ ...data, token, email })}
                 resetOnSuccess={['password', 'password_confirmation']}
             >
                 {({ processing, errors }) => (
                     <div className="grid gap-6">
                         <div className="grid gap-2">
-                            <Label htmlFor="email">
-                                {t('common.email')}
-                            </Label>
+                            <Label htmlFor="email">{t('common.email')}</Label>
                             <Input
                                 id="email"
                                 type="email"
@@ -76,7 +74,9 @@ export default function ResetPassword({ token, email }: ResetPasswordProps) {
                                 name="password_confirmation"
                                 autoComplete="new-password"
                                 className="mt-1 block w-full"
-                                placeholder={t('common.confirm_password_placeholder')}
+                                placeholder={t(
+                                    'common.confirm_password_placeholder',
+                                )}
                             />
                             <InputError
                                 message={errors.password_confirmation}

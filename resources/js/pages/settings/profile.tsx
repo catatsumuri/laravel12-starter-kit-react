@@ -63,7 +63,9 @@ export default function Profile({
                                         name="name"
                                         required
                                         autoComplete="name"
-                                        placeholder={t('common.name_placeholder')}
+                                        placeholder={t(
+                                            'common.name_placeholder',
+                                        )}
                                     />
 
                                     <InputError
@@ -85,7 +87,9 @@ export default function Profile({
                                         name="email"
                                         required
                                         autoComplete="username"
-                                        placeholder={t('common.email_placeholder')}
+                                        placeholder={t(
+                                            'common.email_placeholder',
+                                        )}
                                     />
 
                                     <InputError

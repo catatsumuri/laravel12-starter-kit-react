@@ -30,9 +30,7 @@ export default function TwoFactorChallenge() {
                 description: t(
                     'auth.two_factor_challenge.recovery.description',
                 ),
-                toggleText: t(
-                    'auth.two_factor_challenge.recovery.toggle_text',
-                ),
+                toggleText: t('auth.two_factor_challenge.recovery.toggle_text'),
             };
         }
 
@@ -118,7 +116,9 @@ export default function TwoFactorChallenge() {
 
                             <div className="text-center text-sm text-muted-foreground">
                                 <span>
-                                    {t('auth.two_factor_challenge.or_you_can')}{' '}
+                                    {t(
+                                        'auth.two_factor_challenge.or_you_can',
+                                    )}{' '}
                                 </span>
                                 <button
                                     type="button"

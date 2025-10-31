@@ -15,9 +15,14 @@ import { useTranslation } from 'react-i18next';
 interface LoginProps {
     status?: string;
     canResetPassword: boolean;
+    canRegister: boolean;
 }
 
-export default function Login({ status, canResetPassword }: LoginProps) {
+export default function Login({
+    status,
+    canResetPassword,
+    canRegister,
+}: LoginProps) {
     const { t } = useTranslation();
 
     return (
@@ -74,7 +79,9 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                                     required
                                     tabIndex={2}
                                     autoComplete="current-password"
-                                    placeholder={t('common.password_placeholder')}
+                                    placeholder={t(
+                                        'common.password_placeholder',
+                                    )}
                                 />
                                 <InputError message={errors.password} />
                             </div>
@@ -102,12 +109,14 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                             </Button>
                         </div>
 
-                        <div className="text-center text-sm text-muted-foreground">
-                            {t('auth.login.no_account')}{' '}
-                            <TextLink href={register()} tabIndex={5}>
-                                {t('auth.login.sign_up')}
-                            </TextLink>
-                        </div>
+                        {canRegister && (
+                            <div className="text-center text-sm text-muted-foreground">
+                                {t('auth.login.no_account')}{' '}
+                                <TextLink href={register()} tabIndex={5}>
+                                    Sign up
+                                </TextLink>
+                            </div>
+                        )}
                     </>
                 )}
             </Form>

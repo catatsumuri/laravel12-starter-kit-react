@@ -1,5 +1,5 @@
-import RegisteredUserController from '@/actions/App/Http/Controllers/Auth/RegisteredUserController';
 import { login } from '@/routes';
+import { store } from '@/routes/register';
 import { Form, Head } from '@inertiajs/react';
 
 import InputError from '@/components/input-error';
@@ -21,7 +21,7 @@ export default function Register() {
         >
             <Head title={t('auth.register.head_title')} />
             <Form
-                {...RegisteredUserController.store.form()}
+                {...store.form()}
                 resetOnSuccess={['password', 'password_confirmation']}
                 disableWhileProcessing
                 className="flex flex-col gap-6"
@@ -30,9 +30,7 @@ export default function Register() {
                     <>
                         <div className="grid gap-6">
                             <div className="grid gap-2">
-                                <Label htmlFor="name">
-                                    {t('common.name')}
-                                </Label>
+                                <Label htmlFor="name">{t('common.name')}</Label>
                                 <Input
                                     id="name"
                                     type="text"
@@ -76,7 +74,9 @@ export default function Register() {
                                     tabIndex={3}
                                     autoComplete="new-password"
                                     name="password"
-                                    placeholder={t('common.password_placeholder')}
+                                    placeholder={t(
+                                        'common.password_placeholder',
+                                    )}
                                 />
                                 <InputError message={errors.password} />
                             </div>
@@ -92,7 +92,9 @@ export default function Register() {
                                     tabIndex={4}
                                     autoComplete="new-password"
                                     name="password_confirmation"
-                                    placeholder={t('common.confirm_password_placeholder')}
+                                    placeholder={t(
+                                        'common.confirm_password_placeholder',
+                                    )}
                                 />
                                 <InputError
                                     message={errors.password_confirmation}

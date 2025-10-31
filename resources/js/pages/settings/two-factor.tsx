@@ -88,9 +88,7 @@ export default function TwoFactor({
                                 {t('common.disabled')}
                             </Badge>
                             <p className="text-muted-foreground">
-                                {t(
-                                    'settings.two_factor.disabled_description',
-                                )}
+                                {t('settings.two_factor.disabled_description')}
                             </p>
 
                             <div>
@@ -114,7 +112,9 @@ export default function TwoFactor({
                                                 disabled={processing}
                                             >
                                                 <ShieldCheck />
-                                                {t('settings.two_factor.enable')}
+                                                {t(
+                                                    'settings.two_factor.enable',
+                                                )}
                                             </Button>
                                         )}
                                     </Form>

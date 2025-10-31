@@ -11,8 +11,15 @@ import HeadingSmall from '@/components/heading-small';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { edit } from '@/routes/password';
+import { edit } from '@/routes/user-password';
 import { useTranslation } from 'react-i18next';
+
+const breadcrumbs: BreadcrumbItem[] = [
+    {
+        title: 'Password settings',
+        href: edit().url,
+    },
+];
 
 export default function Password() {
     const passwordInput = useRef<HTMLInputElement>(null);
@@ -33,9 +40,7 @@ export default function Password() {
                 <div className="space-y-6">
                     <HeadingSmall
                         title={t('settings.password.section_title')}
-                        description={t(
-                            'settings.password.section_description',
-                        )}
+                        description={t('settings.password.section_description')}
                     />
 
                     <Form

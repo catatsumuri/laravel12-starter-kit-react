@@ -4,8 +4,8 @@ namespace App\Http\Middleware;
 
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Http\Request;
-use Inertia\Middleware;
 use Illuminate\Support\Facades\Lang;
+use Inertia\Middleware;
 
 class HandleInertiaRequests extends Middleware
 {

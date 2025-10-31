@@ -2,6 +2,7 @@ import '../css/app.css';
 
 import { createInertiaApp, router } from '@inertiajs/react';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
+import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { initializeTheme } from './hooks/use-appearance';
 import { configureI18n } from './lib/i18n';
@@ -73,8 +74,7 @@ router.on('navigate', (event) => {
 });
 
 createInertiaApp({
-    title: (title) =>
-        title ? `${title} - ${currentAppName}` : currentAppName,
+    title: (title) => (title ? `${title} - ${currentAppName}` : currentAppName),
     resolve: (name) =>
         resolvePageComponent(
             `./pages/${name}.tsx`,
@@ -91,7 +91,11 @@ createInertiaApp({
 
         const root = createRoot(el);
 
-        root.render(<App {...props} />);
+        root.render(
+            <StrictMode>
+                <App {...props} />
+            </StrictMode>,
+        );
     },
     progress: {
         color: '#4B5563',

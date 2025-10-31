@@ -91,57 +91,34 @@ return [
         ],
     ],
 
+    // Navigation
+    'navigation' => [
+        'menu' => 'ナビゲーションメニュー',
+        'repository' => 'リポジトリ',
+        'documentation' => 'ドキュメント',
+        'settings' => '設定',
+    ],
+
     // Welcome page
     'welcome' => [
         'head_title' => 'ようこそ',
-        'heading' => 'Laravelへようこそ',
-        'description' => "Laravelを使用してアプリケーション開発を始めるために必要なすべてが揃っています。\n開発を始めるために、以下のリソースをご覧ください。",
+        'heading' => 'さあ、始めましょう',
+        'description' => "Laravelには非常に豊富なエコシステムがあります。\n以下から始めることをお勧めします。",
         'cta_dashboard' => 'ダッシュボード',
         'cta_login' => 'ログイン',
         'cta_register' => '新規登録',
-        'read_documentation' => 'ドキュメントを読む:',
-        'documentation_link' => 'Laravel ドキュメント',
-        'watch_tutorials' => 'ビデオチュートリアルを見る:',
+        'read_documentation' => 'ドキュメントを読む',
+        'documentation_link' => 'ドキュメント',
+        'watch_tutorials' => 'ビデオチュートリアルを見る',
         'laracasts_link' => 'Laracasts',
         'deploy_now' => '今すぐデプロイ',
-    ],
-
-    // Dashboard page
-    'dashboard' => [
-        'highlights' => [
-            'heading' => 'ハイライト',
-            'adoption' => [
-                'title' => 'Laravelの採用',
-            ],
-            'support' => [
-                'title' => 'サポート',
-            ],
-        ],
-        'insights' => [
-            'heading' => 'インサイト',
-            'description' => 'あなたのアプリケーションの主要な指標を確認',
-            'roadmap' => [
-                'title' => 'ロードマップ',
-            ],
-            'revenue' => [
-                'title' => '収益',
-            ],
-            'retention' => [
-                'title' => 'リテンション',
-            ],
-            'team' => [
-                'title' => 'チーム',
-            ],
-            'cta' => [
-                'title' => 'さらに詳しく',
-                'description' => '詳細な分析とレポートを確認',
-            ],
-        ],
     ],
 
     // Settings pages
     'settings' => [
         'layout' => [
+            'title' => '設定',
+            'description' => 'アカウント設定を管理します。',
             'nav' => [
                 'profile' => 'プロフィール',
                 'password' => 'パスワード',
@@ -154,6 +131,9 @@ return [
             'head_title' => 'プロフィール',
             'section_title' => 'プロフィール情報',
             'section_description' => 'アカウントのプロフィール情報とメールアドレスを更新します。',
+            'email_unverified' => 'メールアドレスが確認されていません。',
+            'resend_verification' => '確認メールを再送信する',
+            'verification_sent' => '新しい確認リンクをメールアドレスに送信しました。',
         ],
         'password' => [
             'breadcrumb' => 'パスワード',

@@ -108,7 +108,9 @@ export default function DeleteUser() {
                                                 type="submit"
                                                 data-test="confirm-delete-user-button"
                                             >
-                                                {t('components.delete_user.confirm')}
+                                                {t(
+                                                    'components.delete_user.confirm',
+                                                )}
                                             </button>
                                         </Button>
                                     </DialogFooter>
