@@ -69,9 +69,23 @@ export function initializeTheme(
 }
 
 export function useAppearance() {
-    const { features } = usePage().props;
-    const defaultAppearance = features.defaultAppearance || 'system';
-    const appearanceSettingsEnabled = features.appearanceSettings ?? true;
+    // Try to get Inertia page props, but handle case when outside Inertia context
+    let defaultAppearance: Appearance = 'system';
+    let appearanceSettingsEnabled = true;
+
+    try {
+        const { features } = usePage().props;
+        defaultAppearance = features.defaultAppearance || 'system';
+        appearanceSettingsEnabled = features.appearanceSettings ?? true;
+    } catch (error) {
+        // Not in Inertia context, use defaults or window feature flags
+        const featureFlags = typeof window !== 'undefined' ? window.__FEATURE_FLAGS__ : undefined;
+        if (featureFlags) {
+            defaultAppearance = featureFlags.defaultAppearance || 'system';
+            appearanceSettingsEnabled = featureFlags.appearanceSettings ?? true;
+        }
+    }
+
     const [appearance, setAppearance] = useState<Appearance>(defaultAppearance);
 
     const updateAppearance = useCallback(

@@ -8,6 +8,7 @@ uses(\Illuminate\Foundation\Testing\RefreshDatabase::class);
 
 test('admin settings page can be rendered', function () {
     $user = User::factory()->create();
+    $user->assignRole('admin');
 
     $this->actingAs($user)
         ->get(route('admin.settings.index'))
@@ -33,8 +34,17 @@ test('admin settings page requires authentication', function () {
     $response->assertRedirect(route('login'));
 });
 
+test('admin settings page requires admin role', function () {
+    $user = User::factory()->create();
+
+    $response = $this->actingAs($user)->get(route('admin.settings.index'));
+
+    $response->assertForbidden();
+});
+
 test('admin settings can be updated', function () {
     $user = User::factory()->create();
+    $user->assignRole('admin');
 
     $this->actingAs($user)
         ->patch(route('admin.settings.update'), [
@@ -76,8 +86,23 @@ test('admin settings update requires authentication', function () {
     $response->assertRedirect(route('login'));
 });
 
+test('admin settings update requires admin role', function () {
+    $user = User::factory()->create();
+
+    $response = $this->actingAs($user)->patch(route('admin.settings.update'), [
+        'app_name' => 'Updated App Name',
+        'app_url' => 'https://example.com',
+        'app_debug' => false,
+        'app_locale' => 'ja',
+        'app_fallback_locale' => 'en',
+    ]);
+
+    $response->assertForbidden();
+});
+
 test('admin settings update validates app_name is required', function () {
     $user = User::factory()->create();
+    $user->assignRole('admin');
 
     $this->actingAs($user)
         ->patch(route('admin.settings.update'), [
@@ -92,6 +117,7 @@ test('admin settings update validates app_name is required', function () {
 
 test('admin settings update validates app_url is required', function () {
     $user = User::factory()->create();
+    $user->assignRole('admin');
 
     $this->actingAs($user)
         ->patch(route('admin.settings.update'), [
@@ -106,6 +132,7 @@ test('admin settings update validates app_url is required', function () {
 
 test('admin settings update validates app_url is valid url', function () {
     $user = User::factory()->create();
+    $user->assignRole('admin');
 
     $this->actingAs($user)
         ->patch(route('admin.settings.update'), [
@@ -120,6 +147,7 @@ test('admin settings update validates app_url is valid url', function () {
 
 test('admin settings update validates app_locale is valid', function () {
     $user = User::factory()->create();
+    $user->assignRole('admin');
 
     $this->actingAs($user)
         ->patch(route('admin.settings.update'), [
@@ -134,6 +162,7 @@ test('admin settings update validates app_locale is valid', function () {
 
 test('admin settings update validates app_fallback_locale is valid', function () {
     $user = User::factory()->create();
+    $user->assignRole('admin');
 
     $this->actingAs($user)
         ->patch(route('admin.settings.update'), [
@@ -148,6 +177,7 @@ test('admin settings update validates app_fallback_locale is valid', function ()
 
 test('admin settings update enables debug mode', function () {
     $user = User::factory()->create();
+    $user->assignRole('admin');
 
     $this->actingAs($user)
         ->patch(route('admin.settings.update'), [
@@ -165,6 +195,7 @@ test('admin settings update enables debug mode', function () {
 
 test('admin settings update does not update masked aws secret', function () {
     $user = User::factory()->create();
+    $user->assignRole('admin');
 
     // Set an initial secret
     Setting::updateValue('aws.secret_access_key', 'original-secret');
@@ -186,6 +217,7 @@ test('admin settings update does not update masked aws secret', function () {
 
 test('admin settings update can change aws secret', function () {
     $user = User::factory()->create();
+    $user->assignRole('admin');
 
     // Set an initial secret
     Setting::updateValue('aws.secret_access_key', 'original-secret');
@@ -207,6 +239,7 @@ test('admin settings update can change aws secret', function () {
 
 test('admin settings page displays database overrides', function () {
     $user = User::factory()->create();
+    $user->assignRole('admin');
 
     // Set some database overrides
     Setting::updateValue('app.name', 'Database App Name');

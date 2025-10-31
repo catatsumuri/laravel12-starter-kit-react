@@ -7,6 +7,7 @@ uses(\Illuminate\Foundation\Testing\RefreshDatabase::class);
 
 test('environment settings page can be rendered with password confirmation', function () {
     $user = User::factory()->create();
+    $user->assignRole('admin');
 
     $this->actingAs($user)
         ->withSession(['auth.password_confirmed_at' => time()])
@@ -22,6 +23,7 @@ test('environment settings page can be rendered with password confirmation', fun
 
 test('environment settings page requires password confirmation', function () {
     $user = User::factory()->create();
+    $user->assignRole('admin');
 
     $response = $this->actingAs($user)
         ->get(route('admin.settings.environment.index'));
@@ -35,8 +37,19 @@ test('environment settings page requires authentication', function () {
     $response->assertRedirect(route('login'));
 });
 
+test('environment settings page requires admin role', function () {
+    $user = User::factory()->create();
+
+    $response = $this->actingAs($user)
+        ->withSession(['auth.password_confirmed_at' => time()])
+        ->get(route('admin.settings.environment.index'));
+
+    $response->assertForbidden();
+});
+
 test('environment settings page includes expected environment variables', function () {
     $user = User::factory()->create();
+    $user->assignRole('admin');
 
     $this->actingAs($user)
         ->withSession(['auth.password_confirmed_at' => time()])
@@ -55,6 +68,7 @@ test('environment settings page includes expected environment variables', functi
 
 test('environment settings page includes expected config variables', function () {
     $user = User::factory()->create();
+    $user->assignRole('admin');
 
     $this->actingAs($user)
         ->withSession(['auth.password_confirmed_at' => time()])
@@ -75,6 +89,7 @@ test('environment settings page includes expected config variables', function ()
 
 test('environment settings page masks sensitive values', function () {
     $user = User::factory()->create();
+    $user->assignRole('admin');
 
     $this->actingAs($user)
         ->withSession(['auth.password_confirmed_at' => time()])

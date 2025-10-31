@@ -14,6 +14,11 @@ Route::get('/', function () {
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', function () {
+        // Redirect admin users to admin dashboard
+        if (auth()->user()->hasRole('admin')) {
+            return redirect()->route('admin.dashboard');
+        }
+
         return Inertia::render('dashboard');
     })->name('dashboard');
 
@@ -25,7 +30,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
         ->name('avatar.show');
 });
 
-require __DIR__.'/auth.php';
 require __DIR__.'/settings.php';
 require __DIR__.'/admin.php';
 require __DIR__.'/auth.php';

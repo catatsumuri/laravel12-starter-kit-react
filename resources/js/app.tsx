@@ -50,10 +50,17 @@ createInertiaApp({
     setup({ el, App, props }) {
         const root = createRoot(el);
 
-        root.render(
-            <StrictMode>
+        // Wrap App with Toaster inside
+        const AppWithToaster = () => (
+            <>
                 <App {...props} />
                 <Toaster />
+            </>
+        );
+
+        root.render(
+            <StrictMode>
+                <AppWithToaster />
             </StrictMode>,
         );
 

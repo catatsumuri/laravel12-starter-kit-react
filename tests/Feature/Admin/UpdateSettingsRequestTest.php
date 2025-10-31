@@ -6,6 +6,7 @@ uses(\Illuminate\Foundation\Testing\RefreshDatabase::class);
 
 beforeEach(function () {
     $this->user = User::factory()->create();
+    $this->user->assignRole('admin');
 });
 
 test('update settings request validates app_name is required', function () {

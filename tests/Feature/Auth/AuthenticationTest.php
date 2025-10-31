@@ -10,8 +10,9 @@ test('login screen can be rendered', function () {
     $response->assertStatus(200);
 });
 
-test('users can authenticate using the login screen', function () {
+test('regular users can authenticate and are redirected to dashboard', function () {
     $user = User::factory()->withoutTwoFactor()->create();
+    $user->assignRole('user');
 
     $response = $this->post(route('login.store'), [
         'email' => $user->email,
@@ -22,6 +23,25 @@ test('users can authenticate using the login screen', function () {
     $response
         ->assertRedirect(route('dashboard', absolute: false))
         ->assertSessionHas('success', 'Login successful!');
+});
+
+test('admin users can authenticate and are redirected to admin dashboard', function () {
+    $user = User::factory()->withoutTwoFactor()->create();
+    
+    // Create admin role if it doesn't exist
+    $adminRole = \Spatie\Permission\Models\Role::firstOrCreate(['name' => 'admin']);
+    $user->assignRole($adminRole);
+    
+    // Verify role is assigned
+    expect($user->fresh()->hasRole('admin'))->toBeTrue();
+
+    $response = $this->post(route('login.store'), [
+        'email' => $user->email,
+        'password' => 'password',
+    ]);
+
+    $this->assertAuthenticated();
+    $response->assertRedirect(route('admin.dashboard', absolute: false));
 });
 
 test('users with two factor enabled are redirected to two factor challenge', function () {

@@ -3,6 +3,7 @@
 use App\Http\Middleware\CheckFeatureEnabled;
 use App\Http\Middleware\HandleAppearance;
 use App\Http\Middleware\HandleInertiaRequests;
+use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -25,7 +26,12 @@ return Application::configure(basePath: dirname(__DIR__))
 
         $middleware->alias([
             'feature' => CheckFeatureEnabled::class,
+            'admin' => \App\Http\Middleware\AdminMiddleware::class,
         ]);
+    })
+    ->withSchedule(function (Schedule $schedule) {
+        // Clean up activity log older than the configured days (default: 365 days)
+        $schedule->command('activitylog:clean')->daily();
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //
