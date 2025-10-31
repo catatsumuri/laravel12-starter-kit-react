@@ -20,7 +20,7 @@ test('user can delete their account when feature is enabled', function () {
         ->assertRedirect('/');
 
     $this->assertGuest();
-    expect($user->fresh())->toBeNull();
+    expect($user->fresh()->trashed())->toBeTrue();
 });
 
 test('user cannot delete their account when feature is disabled', function () {

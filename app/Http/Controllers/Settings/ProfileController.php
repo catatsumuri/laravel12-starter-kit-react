@@ -46,7 +46,7 @@ class ProfileController extends Controller
                 ->toMediaCollection('avatar');
         }
 
-        return to_route('profile.edit');
+        return to_route('profile.edit')->with('success', __('Profile updated successfully.'));
     }
 
     /**
