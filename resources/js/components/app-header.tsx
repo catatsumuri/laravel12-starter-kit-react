@@ -28,7 +28,7 @@ import {
 } from '@/components/ui/tooltip';
 import { UserMenuContent } from '@/components/user-menu-content';
 import { useInitials } from '@/hooks/use-initials';
-import { cn } from '@/lib/utils';
+import { cn, isSameUrl, resolveUrl } from '@/lib/utils';
 import { dashboard } from '@/routes';
 import { index as adminSettingsIndex } from '@/routes/admin/settings';
 import { type BreadcrumbItem, type NavItem, type SharedData } from '@/types';
@@ -159,12 +159,10 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
                                             href={item.href}
                                             className={cn(
                                                 navigationMenuTriggerStyle(),
-                                                page.url ===
-                                                    (typeof item.href ===
-                                                    'string'
-                                                        ? item.href
-                                                        : item.href.url) &&
-                                                    activeItemStyles,
+                                                isSameUrl(
+                                                    page.url,
+                                                    item.href,
+                                                ) && activeItemStyles,
                                                 'h-9 cursor-pointer px-3',
                                             )}
                                         >
@@ -176,7 +174,7 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
                                             )}
                                             {item.title}
                                         </Link>
-                                        {page.url === item.href && (
+                                        {isSameUrl(page.url, item.href) && (
                                             <div className="absolute bottom-0 left-0 h-0.5 w-full translate-y-px bg-black dark:bg-white"></div>
                                         )}
                                     </NavigationMenuItem>
