@@ -11,6 +11,7 @@ import { send } from '@/routes/verification';
 import { type SharedData } from '@/types';
 import { Transition } from '@headlessui/react';
 import { Form, Head, Link, usePage } from '@inertiajs/react';
+import { formatDateTime, formatRelativeTime } from '@/lib/utils';
 
 export default function Profile({
     mustVerifyEmail,
@@ -31,6 +32,16 @@ export default function Profile({
                         title="Profile information"
                         description="Update your name and email address"
                     />
+
+                    {auth.user.last_login_at && (
+                        <div className="rounded-md bg-muted p-3 text-sm text-muted-foreground">
+                            Last login:{' '}
+                            {formatDateTime(auth.user.last_login_at)}{' '}
+                            <span className="text-muted-foreground/70">
+                                ({formatRelativeTime(auth.user.last_login_at)})
+                            </span>
+                        </div>
+                    )}
 
                     <Form
                         {...ProfileController.update.form()}
