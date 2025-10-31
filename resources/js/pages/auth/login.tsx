@@ -19,7 +19,6 @@ interface LoginProps {
 
 export default function Login({ status, canResetPassword }: LoginProps) {
     const { features } = usePage<SharedData>().props;
-
     return (
         <AuthLayout
             title="Log in to your account"
