@@ -2,6 +2,7 @@ import '../css/app.css';
 
 import { createInertiaApp, router } from '@inertiajs/react';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
+import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { toast } from 'sonner';
 import { Toaster } from './components/ui/sonner';
@@ -41,10 +42,10 @@ createInertiaApp({
         const root = createRoot(el);
 
         root.render(
-            <>
+            <StrictMode>
                 <App {...props} />
                 <Toaster />
-            </>,
+            </StrictMode>,
         );
 
         // Handle initial page load flash messages

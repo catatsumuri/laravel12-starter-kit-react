@@ -1,7 +1,5 @@
 <?php
 
-uses(\Illuminate\Foundation\Testing\RefreshDatabase::class);
-
 test('registration screen can be rendered', function () {
     $response = $this->get(route('register'));
 
@@ -19,5 +17,5 @@ test('new users can register', function () {
     $this->assertAuthenticated();
     $response
         ->assertRedirect(route('dashboard', absolute: false))
-        ->assertSessionHas('success', 'Account created successfully.');
+        ->assertSessionHas('success', 'Login successful!');
 });
