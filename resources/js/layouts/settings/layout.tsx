@@ -9,50 +9,44 @@ import { edit as editPassword } from '@/routes/user-password';
 import { type NavItem } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
 import { type PropsWithChildren, useMemo } from 'react';
-
-const getSidebarNavItems = (
-    twoFactorEnabled: boolean,
-    appearanceSettingsEnabled: boolean,
-): NavItem[] => [
-    {
-        title: 'Profile',
-        href: edit(),
-        icon: null,
-    },
-    {
-        title: 'Password',
-        href: editPassword(),
-        icon: null,
-    },
-    ...(twoFactorEnabled
-        ? [
-              {
-                  title: 'Two-Factor Auth',
-                  href: show(),
-                  icon: null,
-              },
-          ]
-        : []),
-    ...(appearanceSettingsEnabled
-        ? [
-              {
-                  title: 'Appearance',
-                  href: editAppearance(),
-                  icon: null,
-              },
-          ]
-        : []),
-];
+import { useTranslation } from 'react-i18next';
 
 export default function SettingsLayout({ children }: PropsWithChildren) {
+    const { t } = useTranslation();
     const { features } = usePage().props;
-    const sidebarNavItems = useMemo(
-        () =>
-            getSidebarNavItems(
-                features.twoFactorAuthentication,
-                features.appearanceSettings,
-            ),
-        [features.twoFactorAuthentication, features.appearanceSettings],
+
+    const sidebarNavItems: NavItem[] = useMemo(
+        () => [
+            {
+                title: t('settings.layout.nav.profile'),
+                href: edit(),
+                icon: null,
+            },
+            {
+                title: t('settings.layout.nav.password'),
+                href: editPassword(),
+                icon: null,
+            },
+            ...(features.twoFactorAuthentication
+                ? [
+                      {
+                          title: t('settings.layout.nav.two_factor'),
+                          href: show(),
+                          icon: null,
+                      },
+                  ]
+                : []),
+            ...(features.appearanceSettings
+                ? [
+                      {
+                          title: t('settings.layout.nav.appearance'),
+                          href: editAppearance(),
+                          icon: null,
+                      },
+                  ]
+                : []),
+        ],
+        [t, features.twoFactorAuthentication, features.appearanceSettings],
     );
 
     // When server-side rendering, we only render the layout on the client...
@@ -65,8 +59,8 @@ export default function SettingsLayout({ children }: PropsWithChildren) {
     return (
         <div className="px-4 py-6">
             <Heading
-                title="Settings"
-                description="Manage your profile and account settings"
+                title={t('settings.layout.title')}
+                description={t('settings.layout.description')}
             />
 
             <div className="flex flex-col lg:flex-row lg:space-x-12">

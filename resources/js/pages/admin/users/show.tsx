@@ -9,10 +9,17 @@ import {
     DialogTrigger,
 } from '@/components/ui/dialog';
 import AppLayout from '@/layouts/app-layout';
-import { show, edit, index, destroy } from '@/routes/admin/users';
+import { destroy, edit, index, show } from '@/routes/admin/users';
 import { type BreadcrumbItem, type User } from '@/types';
 import { Head, Link, router, usePage } from '@inertiajs/react';
-import { ArrowLeft, Mail, User as UserIcon, Calendar, Trash2, Activity } from 'lucide-react';
+import {
+    Activity,
+    ArrowLeft,
+    Calendar,
+    Mail,
+    Trash2,
+    User as UserIcon,
+} from 'lucide-react';
 
 interface Props {
     user: User;
@@ -54,7 +61,7 @@ export default function Show({ user }: Props) {
                     <div className="flex gap-2">
                         <Button variant="outline" asChild>
                             <Link href={`/admin/users/${user.id}/activities`}>
-                                <Activity className="size-4 mr-2" />
+                                <Activity className="mr-2 size-4" />
                                 Activity Log
                             </Link>
                         </Button>
@@ -67,20 +74,26 @@ export default function Show({ user }: Props) {
                                     variant="destructive"
                                     disabled={user.id === auth.user.id}
                                 >
-                                    <Trash2 className="size-4 mr-2" />
+                                    <Trash2 className="mr-2 size-4" />
                                     Delete
                                 </Button>
                             </DialogTrigger>
                             <DialogContent>
                                 <DialogTitle>Delete User</DialogTitle>
                                 <DialogDescription>
-                                    Are you sure you want to delete {user.name}? This action cannot be undone.
+                                    Are you sure you want to delete {user.name}?
+                                    This action cannot be undone.
                                 </DialogDescription>
                                 <DialogFooter className="gap-2">
                                     <DialogClose asChild>
-                                        <Button variant="secondary">Cancel</Button>
+                                        <Button variant="secondary">
+                                            Cancel
+                                        </Button>
                                     </DialogClose>
-                                    <Button variant="destructive" onClick={handleDelete}>
+                                    <Button
+                                        variant="destructive"
+                                        onClick={handleDelete}
+                                    >
                                         Delete User
                                     </Button>
                                 </DialogFooter>

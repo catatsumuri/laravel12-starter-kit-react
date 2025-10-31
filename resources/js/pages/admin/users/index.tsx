@@ -1,5 +1,4 @@
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import {
     Dialog,
     DialogClose,
@@ -9,11 +8,11 @@ import {
     DialogTitle,
     DialogTrigger,
 } from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
 import AppLayout from '@/layouts/app-layout';
-import { create, edit, index, show, destroy } from '@/routes/admin/users';
-import { type BreadcrumbItem } from '@/types';
+import { create, destroy, edit, index, show } from '@/routes/admin/users';
+import { type BreadcrumbItem, type User } from '@/types';
 import { Form, Head, Link, router, usePage } from '@inertiajs/react';
-import { type User } from '@/types';
 import { Pencil, Plus, Search, Trash2 } from 'lucide-react';
 import { useState } from 'react';
 
@@ -88,7 +87,7 @@ export default function Index({ users, filters }: Props) {
 
                 <Form action={index()} className="flex gap-2">
                     <div className="relative flex-1">
-                        <Search className="absolute left-2 top-2.5 size-4 text-muted-foreground" />
+                        <Search className="absolute top-2.5 left-2 size-4 text-muted-foreground" />
                         <Input
                             type="text"
                             name="search"
@@ -149,8 +148,9 @@ export default function Index({ users, filters }: Props) {
                                             {user.email}
                                         </td>
                                         <td className="px-4 py-3 text-sm">
-                                            <span className="inline-flex items-center rounded-full bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700 ring-1 ring-inset ring-blue-700/10">
-                                                {user.roles?.[0]?.name || 'user'}
+                                            <span className="inline-flex items-center rounded-full bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700 ring-1 ring-blue-700/10 ring-inset">
+                                                {user.roles?.[0]?.name ||
+                                                    'user'}
                                             </span>
                                         </td>
                                         <td className="px-4 py-3 text-sm">
@@ -160,7 +160,11 @@ export default function Index({ users, filters }: Props) {
                                         </td>
                                         <td className="px-4 py-3 text-right">
                                             <div className="flex justify-end gap-2">
-                                                <Button variant="outline" size="sm" asChild>
+                                                <Button
+                                                    variant="outline"
+                                                    size="sm"
+                                                    asChild
+                                                >
                                                     <Link href={edit(user)}>
                                                         <Pencil className="size-4" />
                                                     </Link>
@@ -170,22 +174,44 @@ export default function Index({ users, filters }: Props) {
                                                         <Button
                                                             variant="outline"
                                                             size="sm"
-                                                            disabled={user.id === auth.user.id}
-                                                            onClick={() => setUserToDelete(user)}
+                                                            disabled={
+                                                                user.id ===
+                                                                auth.user.id
+                                                            }
+                                                            onClick={() =>
+                                                                setUserToDelete(
+                                                                    user,
+                                                                )
+                                                            }
                                                         >
                                                             <Trash2 className="size-4" />
                                                         </Button>
                                                     </DialogTrigger>
                                                     <DialogContent>
-                                                        <DialogTitle>Delete User</DialogTitle>
+                                                        <DialogTitle>
+                                                            Delete User
+                                                        </DialogTitle>
                                                         <DialogDescription>
-                                                            Are you sure you want to delete {userToDelete?.name}? This action cannot be undone.
+                                                            Are you sure you
+                                                            want to delete{' '}
+                                                            {userToDelete?.name}
+                                                            ? This action cannot
+                                                            be undone.
                                                         </DialogDescription>
                                                         <DialogFooter className="gap-2">
-                                                            <DialogClose asChild>
-                                                                <Button variant="secondary">Cancel</Button>
+                                                            <DialogClose
+                                                                asChild
+                                                            >
+                                                                <Button variant="secondary">
+                                                                    Cancel
+                                                                </Button>
                                                             </DialogClose>
-                                                            <Button variant="destructive" onClick={handleDelete}>
+                                                            <Button
+                                                                variant="destructive"
+                                                                onClick={
+                                                                    handleDelete
+                                                                }
+                                                            >
                                                                 Delete User
                                                             </Button>
                                                         </DialogFooter>
@@ -208,9 +234,7 @@ export default function Index({ users, filters }: Props) {
                                 variant={link.active ? 'default' : 'outline'}
                                 size="sm"
                                 disabled={!link.url}
-                                onClick={() =>
-                                    link.url && router.get(link.url)
-                                }
+                                onClick={() => link.url && router.get(link.url)}
                                 dangerouslySetInnerHTML={{ __html: link.label }}
                             />
                         ))}

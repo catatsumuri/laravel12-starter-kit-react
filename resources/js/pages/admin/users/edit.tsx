@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/app-layout';
-import { index, edit, update } from '@/routes/admin/users';
+import { edit, index, update } from '@/routes/admin/users';
 import { type BreadcrumbItem, type User } from '@/types';
 import { Form, Head, Link } from '@inertiajs/react';
 import { ArrowLeft } from 'lucide-react';
@@ -95,9 +95,7 @@ export default function Edit({ user }: Props) {
                                         disabled={processing}
                                         asChild
                                     >
-                                        <Link href={index()}>
-                                            Cancel
-                                        </Link>
+                                        <Link href={index()}>Cancel</Link>
                                     </Button>
                                 </div>
                             </>

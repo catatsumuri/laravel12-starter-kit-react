@@ -65,7 +65,7 @@ it('assigns default user role to new users', function () {
 it('displays user roles in admin users index', function () {
     $admin = User::factory()->create();
     $admin->syncRoles(['admin']);
-    
+
     $regularUser = User::factory()->create();
     $regularUser->assignRole('user');
 

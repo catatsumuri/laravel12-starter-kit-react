@@ -19,7 +19,7 @@ use Spatie\Permission\Traits\HasRoles;
 class User extends Authenticatable implements HasMedia
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, InteractsWithMedia, Notifiable, SoftDeletes, TwoFactorAuthenticatable, HasRoles, LogsActivity;
+    use HasFactory, HasRoles, InteractsWithMedia, LogsActivity, Notifiable, SoftDeletes, TwoFactorAuthenticatable;
 
     /**
      * The attributes that are mass assignable.
@@ -109,8 +109,6 @@ class User extends Authenticatable implements HasMedia
 
     /**
      * Get the activity log options.
-     *
-     * @return LogOptions
      */
     public function getActivitylogOptions(): LogOptions
     {
@@ -122,8 +120,6 @@ class User extends Authenticatable implements HasMedia
 
     /**
      * Determine if the user is an admin.
-     *
-     * @return bool
      */
     public function isAdmin(): bool
     {

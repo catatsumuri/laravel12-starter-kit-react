@@ -6,7 +6,6 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
-import { resolveUrl } from '@/lib/utils';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
 import { type ComponentPropsWithoutRef } from 'react';

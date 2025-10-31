@@ -12,6 +12,7 @@ import { Spinner } from '@/components/ui/spinner';
 import AuthLayout from '@/layouts/auth-layout';
 import { type SharedData } from '@/types';
 import { Eye, EyeOff } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 interface RegisterProps {
     showPasswordToggle: boolean;
@@ -22,6 +23,7 @@ export default function Register({ showPasswordToggle }: RegisterProps) {
     const [showPassword, setShowPassword] = useState(false);
     const [showPasswordConfirmation, setShowPasswordConfirmation] =
         useState(false);
+    const { t } = useTranslation();
 
     useEffect(() => {
         if (!features.registration) {
@@ -35,10 +37,10 @@ export default function Register({ showPasswordToggle }: RegisterProps) {
     };
     return (
         <AuthLayout
-            title="Create an account"
-            description="Enter your details below to create your account"
+            title={t('auth.register.title')}
+            description={t('auth.register.description')}
         >
-            <Head title="Register" />
+            <Head title={t('auth.register.head_title')} />
             <Form
                 {...store.form()}
                 resetOnSuccess={['password', 'password_confirmation']}
@@ -49,7 +51,7 @@ export default function Register({ showPasswordToggle }: RegisterProps) {
                     <>
                         <div className="grid gap-6">
                             <div className="grid gap-2">
-                                <Label htmlFor="name">Name</Label>
+                                <Label htmlFor="name">{t('common.name')}</Label>
                                 <Input
                                     id="name"
                                     type="text"
@@ -58,7 +60,7 @@ export default function Register({ showPasswordToggle }: RegisterProps) {
                                     tabIndex={1}
                                     autoComplete="name"
                                     name="name"
-                                    placeholder="Full name"
+                                    placeholder={t('common.name_placeholder')}
                                 />
                                 <InputError
                                     message={errors.name}
@@ -67,7 +69,9 @@ export default function Register({ showPasswordToggle }: RegisterProps) {
                             </div>
 
                             <div className="grid gap-2">
-                                <Label htmlFor="email">Email address</Label>
+                                <Label htmlFor="email">
+                                    {t('common.email_address')}
+                                </Label>
                                 <Input
                                     id="email"
                                     type="email"
@@ -75,13 +79,15 @@ export default function Register({ showPasswordToggle }: RegisterProps) {
                                     tabIndex={2}
                                     autoComplete="email"
                                     name="email"
-                                    placeholder="email@example.com"
+                                    placeholder={t('common.email_placeholder')}
                                 />
                                 <InputError message={errors.email} />
                             </div>
 
                             <div className="grid gap-2">
-                                <Label htmlFor="password">Password</Label>
+                                <Label htmlFor="password">
+                                    {t('common.password')}
+                                </Label>
                                 <div className="relative">
                                     <Input
                                         id="password"
@@ -92,7 +98,9 @@ export default function Register({ showPasswordToggle }: RegisterProps) {
                                         tabIndex={3}
                                         autoComplete="new-password"
                                         name="password"
-                                        placeholder="Password"
+                                        placeholder={t(
+                                            'common.password_placeholder',
+                                        )}
                                         className={
                                             showPasswordToggle ? 'pr-10' : ''
                                         }
@@ -131,7 +139,7 @@ export default function Register({ showPasswordToggle }: RegisterProps) {
 
                             <div className="grid gap-2">
                                 <Label htmlFor="password_confirmation">
-                                    Confirm password
+                                    {t('common.confirm_password')}
                                 </Label>
                                 <div className="relative">
                                     <Input
@@ -143,7 +151,9 @@ export default function Register({ showPasswordToggle }: RegisterProps) {
                                         tabIndex={4}
                                         autoComplete="new-password"
                                         name="password_confirmation"
-                                        placeholder="Confirm password"
+                                        placeholder={t(
+                                            'common.confirm_password_placeholder',
+                                        )}
                                         className={
                                             showPasswordToggle ? 'pr-10' : ''
                                         }
@@ -193,14 +203,14 @@ export default function Register({ showPasswordToggle }: RegisterProps) {
                                 data-test="register-user-button"
                             >
                                 {processing && <Spinner />}
-                                Create account
+                                {t('auth.register.submit')}
                             </Button>
                         </div>
 
                         <div className="text-center text-sm text-muted-foreground">
-                            Already have an account?{' '}
+                            {t('auth.register.have_account')}{' '}
                             <TextLink href={login()} tabIndex={6}>
-                                Log in
+                                {t('auth.register.login_link')}
                             </TextLink>
                         </div>
                     </>

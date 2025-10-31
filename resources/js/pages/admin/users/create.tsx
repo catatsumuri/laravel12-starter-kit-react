@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/app-layout';
-import { index, create, store } from '@/routes/admin/users';
+import { create, index, store } from '@/routes/admin/users';
 import { type BreadcrumbItem } from '@/types';
 import { Form, Head, Link } from '@inertiajs/react';
 import { ArrowLeft } from 'lucide-react';
@@ -85,9 +85,7 @@ export default function Create() {
                                         disabled={processing}
                                         asChild
                                     >
-                                        <Link href={index()}>
-                                            Cancel
-                                        </Link>
+                                        <Link href={index()}>Cancel</Link>
                                     </Button>
                                 </div>
                             </>

@@ -7,6 +7,8 @@ import { createRoot } from 'react-dom/client';
 import { toast } from 'sonner';
 import { Toaster } from './components/ui/sonner';
 import { initializeTheme, type Appearance } from './hooks/use-appearance';
+import { configureI18n } from './lib/i18n';
+import { type SharedData } from './types';
 
 declare global {
     interface Window {
@@ -17,7 +19,70 @@ declare global {
     }
 }
 
-const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
+const initialDocumentTitle =
+    typeof document !== 'undefined'
+        ? document.querySelector('title[inertia]')?.textContent?.trim()
+        : null;
+const defaultAppName =
+    initialDocumentTitle || import.meta.env.VITE_APP_NAME || 'Laravel';
+
+type LocalizationProps = {
+    locale?: string;
+    fallbackLocale?: string;
+    translations?: Record<string, unknown>;
+    fallbackTranslations?: Record<string, unknown>;
+};
+
+const resolveAppName = (props: unknown): string | null => {
+    if (!props || typeof props !== 'object') {
+        return null;
+    }
+
+    const name = (props as Partial<SharedData>).name;
+
+    return typeof name === 'string' && name.length > 0 ? name : null;
+};
+
+let currentAppName = defaultAppName;
+
+const applyLocalization = (props: unknown) => {
+    if (!props || typeof props !== 'object') {
+        return;
+    }
+
+    const data = props as Partial<SharedData & LocalizationProps>;
+    const locale =
+        typeof data.locale === 'string' && data.locale.length > 0
+            ? data.locale
+            : null;
+
+    if (!locale) {
+        return;
+    }
+
+    const fallbackLocale =
+        typeof data.fallbackLocale === 'string' &&
+        data.fallbackLocale.length > 0
+            ? data.fallbackLocale
+            : locale;
+
+    configureI18n(
+        locale,
+        fallbackLocale,
+        data.translations as Record<string, unknown>,
+        data.fallbackTranslations as Record<string, unknown>,
+    );
+};
+
+router.on('navigate', (event) => {
+    const nextName = resolveAppName(event.detail.page.props);
+
+    if (nextName) {
+        currentAppName = nextName;
+    }
+
+    applyLocalization(event.detail.page.props);
+});
 
 // Flash message handler
 function handleFlashMessages(flash: any) {
@@ -41,13 +106,21 @@ function handleFlashMessages(flash: any) {
 }
 
 createInertiaApp({
-    title: (title) => (title ? `${title} - ${appName}` : appName),
+    title: (title) => (title ? `${title} - ${currentAppName}` : currentAppName),
     resolve: (name) =>
         resolvePageComponent(
             `./pages/${name}.tsx`,
             import.meta.glob('./pages/**/*.tsx'),
         ),
     setup({ el, App, props }) {
+        const resolved = resolveAppName(props.initialPage.props);
+
+        if (resolved) {
+            currentAppName = resolved;
+        }
+
+        applyLocalization(props.initialPage.props);
+
         const root = createRoot(el);
 
         // Wrap App with Toaster inside

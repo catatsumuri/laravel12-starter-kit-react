@@ -1,9 +1,9 @@
 import { Button } from '@/components/ui/button';
 import AppLayout from '@/layouts/app-layout';
 import { show } from '@/routes/admin/users';
-import { type BreadcrumbItem, type User, type ActivityLog } from '@/types';
+import { type ActivityLog, type BreadcrumbItem, type User } from '@/types';
 import { Head, Link, router } from '@inertiajs/react';
-import { ArrowLeft, Activity, FileText, Clock } from 'lucide-react';
+import { Activity, ArrowLeft, Clock, FileText } from 'lucide-react';
 
 interface PaginationLink {
     url: string | null;
@@ -72,7 +72,9 @@ export default function Activities({ user, activities }: Props) {
                             </Link>
                         </Button>
                         <div>
-                            <h1 className="text-2xl font-semibold">Activity Log</h1>
+                            <h1 className="text-2xl font-semibold">
+                                Activity Log
+                            </h1>
                             <p className="text-sm text-muted-foreground">
                                 Actions performed by {user.name}
                             </p>
@@ -90,7 +92,8 @@ export default function Activities({ user, activities }: Props) {
                                 </span>
                             </div>
                             <span className="text-sm text-muted-foreground">
-                                {activities.total} {activities.total === 1 ? 'entry' : 'entries'}
+                                {activities.total}{' '}
+                                {activities.total === 1 ? 'entry' : 'entries'}
                             </span>
                         </div>
                     </div>
@@ -98,7 +101,10 @@ export default function Activities({ user, activities }: Props) {
                     <div className="divide-y">
                         {activities.data.length > 0 ? (
                             activities.data.map((activity) => (
-                                <div key={activity.id} className="p-4 hover:bg-muted/30">
+                                <div
+                                    key={activity.id}
+                                    className="p-4 hover:bg-muted/30"
+                                >
                                     <div className="flex gap-4">
                                         <div className="flex-shrink-0">
                                             <div className="flex size-10 items-center justify-center rounded-full bg-primary/10">
@@ -107,7 +113,7 @@ export default function Activities({ user, activities }: Props) {
                                         </div>
                                         <div className="flex-1 space-y-2">
                                             <div className="flex flex-wrap items-center gap-2">
-                                                <span className="text-xs font-mono text-muted-foreground">
+                                                <span className="font-mono text-xs text-muted-foreground">
                                                     #{activity.id}
                                                 </span>
                                                 <span
@@ -128,11 +134,23 @@ export default function Activities({ user, activities }: Props) {
                                             <div className="flex items-center gap-2 text-sm text-muted-foreground">
                                                 <FileText className="size-4" />
                                                 <span>
-                                                    Target: <span className="font-medium">{activity.subject?.type || activity.subject_type}</span>
-                                                    {' '}#{activity.subject?.id || activity.subject_id}
+                                                    Target:{' '}
+                                                    <span className="font-medium">
+                                                        {activity.subject
+                                                            ?.type ||
+                                                            activity.subject_type}
+                                                    </span>{' '}
+                                                    #
+                                                    {activity.subject?.id ||
+                                                        activity.subject_id}
                                                     {activity.subject_label && (
                                                         <span className="text-foreground">
-                                                            {' '}- {truncate(activity.subject_label, 50)}
+                                                            {' '}
+                                                            -{' '}
+                                                            {truncate(
+                                                                activity.subject_label,
+                                                                50,
+                                                            )}
                                                         </span>
                                                     )}
                                                 </span>
@@ -141,53 +159,85 @@ export default function Activities({ user, activities }: Props) {
                                             {activity.properties && (
                                                 <div className="rounded-md border bg-muted/50 p-3 text-sm">
                                                     <div className="grid gap-3 md:grid-cols-2">
-                                                        {activity.properties.old && (
+                                                        {activity.properties
+                                                            .old && (
                                                             <div className="space-y-1">
-                                                                <p className="text-xs font-semibold uppercase text-destructive">
+                                                                <p className="text-xs font-semibold text-destructive uppercase">
                                                                     Old Values
                                                                 </p>
                                                                 <div className="space-y-1 rounded bg-background p-2">
                                                                     {Object.entries(
-                                                                        activity.properties.old,
-                                                                    ).map(([key, value]) => (
-                                                                        <div
-                                                                            key={key}
-                                                                            className="flex items-start gap-2"
-                                                                        >
-                                                                            <span className="font-medium text-muted-foreground">
-                                                                                {key}:
-                                                                            </span>
-                                                                            <span className="flex-1 break-all">
-                                                                                {String(value)}
-                                                                            </span>
-                                                                        </div>
-                                                                    ))}
+                                                                        activity
+                                                                            .properties
+                                                                            .old,
+                                                                    ).map(
+                                                                        ([
+                                                                            key,
+                                                                            value,
+                                                                        ]) => (
+                                                                            <div
+                                                                                key={
+                                                                                    key
+                                                                                }
+                                                                                className="flex items-start gap-2"
+                                                                            >
+                                                                                <span className="font-medium text-muted-foreground">
+                                                                                    {
+                                                                                        key
+                                                                                    }
+                                                                                    :
+                                                                                </span>
+                                                                                <span className="flex-1 break-all">
+                                                                                    {String(
+                                                                                        value,
+                                                                                    )}
+                                                                                </span>
+                                                                            </div>
+                                                                        ),
+                                                                    )}
                                                                 </div>
                                                             </div>
                                                         )}
-                                                        {activity.properties.attributes && (
+                                                        {activity.properties
+                                                            .attributes && (
                                                             <div className="space-y-1">
-                                                                <p className="text-xs font-semibold uppercase text-green-600">
-                                                                    {activity.properties.old
+                                                                <p className="text-xs font-semibold text-green-600 uppercase">
+                                                                    {activity
+                                                                        .properties
+                                                                        .old
                                                                         ? 'New Values'
                                                                         : 'Values'}
                                                                 </p>
                                                                 <div className="space-y-1 rounded bg-background p-2">
                                                                     {Object.entries(
-                                                                        activity.properties.attributes,
-                                                                    ).map(([key, value]) => (
-                                                                        <div
-                                                                            key={key}
-                                                                            className="flex items-start gap-2"
-                                                                        >
-                                                                            <span className="font-medium text-muted-foreground">
-                                                                                {key}:
-                                                                            </span>
-                                                                            <span className="flex-1 break-all">
-                                                                                {String(value)}
-                                                                            </span>
-                                                                        </div>
-                                                                    ))}
+                                                                        activity
+                                                                            .properties
+                                                                            .attributes,
+                                                                    ).map(
+                                                                        ([
+                                                                            key,
+                                                                            value,
+                                                                        ]) => (
+                                                                            <div
+                                                                                key={
+                                                                                    key
+                                                                                }
+                                                                                className="flex items-start gap-2"
+                                                                            >
+                                                                                <span className="font-medium text-muted-foreground">
+                                                                                    {
+                                                                                        key
+                                                                                    }
+                                                                                    :
+                                                                                </span>
+                                                                                <span className="flex-1 break-all">
+                                                                                    {String(
+                                                                                        value,
+                                                                                    )}
+                                                                                </span>
+                                                                            </div>
+                                                                        ),
+                                                                    )}
                                                                 </div>
                                                             </div>
                                                         )}

@@ -29,30 +29,22 @@ import {
 } from '@/components/ui/tooltip';
 import { UserMenuContent } from '@/components/user-menu-content';
 import { useInitials } from '@/hooks/use-initials';
-import { cn, isSameUrl, resolveUrl } from '@/lib/utils';
+import { cn, isSameUrl } from '@/lib/utils';
 import { dashboard } from '@/routes';
 import { index as adminSettingsIndex } from '@/routes/admin/settings';
 import { type BreadcrumbItem, type NavItem, type SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
-import { LayoutGrid, Menu, Search, Settings } from 'lucide-react';
+import {
+    BookOpen,
+    Folder,
+    LayoutGrid,
+    Menu,
+    Search,
+    Settings,
+} from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import AppLogo from './app-logo';
 import AppLogoIcon from './app-logo-icon';
-
-const mainNavItems: NavItem[] = [
-    {
-        title: 'Dashboard',
-        href: dashboard(),
-        icon: LayoutGrid,
-    },
-];
-
-const rightNavItems: NavItem[] = [
-    {
-        title: 'Settings',
-        href: adminSettingsIndex(),
-        icon: Settings,
-    },
-];
 
 const activeItemStyles =
     'text-neutral-900 dark:bg-neutral-800 dark:text-neutral-100';
@@ -62,9 +54,43 @@ interface AppHeaderProps {
 }
 
 export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
+    const { t } = useTranslation();
     const page = usePage<SharedData>();
     const { auth } = page.props;
     const getInitials = useInitials();
+
+    const isAdmin = auth.user.roles?.some((role) => role.name === 'admin');
+
+    const mainNavItems: NavItem[] = [
+        {
+            title: t('common.dashboard'),
+            href: dashboard(),
+            icon: LayoutGrid,
+        },
+    ];
+
+    const rightNavItems: NavItem[] = [
+        ...(isAdmin
+            ? [
+                  {
+                      title: t('navigation.settings'),
+                      href: adminSettingsIndex(),
+                      icon: Settings,
+                  },
+              ]
+            : []),
+        {
+            title: t('navigation.repository'),
+            href: 'https://github.com/laravel/react-starter-kit',
+            icon: Folder,
+        },
+        {
+            title: t('navigation.documentation'),
+            href: 'https://laravel.com/docs/starter-kits#react',
+            icon: BookOpen,
+        },
+    ];
+
     return (
         <>
             <div className="border-b border-sidebar-border/80">
@@ -86,7 +112,7 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
                                 className="flex h-full w-64 flex-col items-stretch justify-between bg-sidebar"
                             >
                                 <SheetTitle className="sr-only">
-                                    Navigation Menu
+                                    {t('navigation.menu')}
                                 </SheetTitle>
                                 <SheetHeader className="flex justify-start text-left">
                                     <AppLogoIcon className="h-6 w-6 fill-current text-black dark:text-white" />

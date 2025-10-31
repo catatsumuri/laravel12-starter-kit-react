@@ -30,16 +30,16 @@ class DatabaseSeeder extends Seeder
         $admin->assignRole('admin');
 
         // Create regular user
-        foreach (range (1, 30) as $i) {
-        $user = User::firstOrCreate(
-            ['email' => 'user'.$i.'@example.com'],
-            [
-                'name' => 'Regular User'.$i,
-                'password' => Hash::make('password'),
-                'email_verified_at' => now(),
-            ]
-        );
-        $user->assignRole('user');
+        foreach (range(1, 30) as $i) {
+            $user = User::firstOrCreate(
+                ['email' => 'user'.$i.'@example.com'],
+                [
+                    'name' => 'Regular User'.$i,
+                    'password' => Hash::make('password'),
+                    'email_verified_at' => now(),
+                ]
+            );
+            $user->assignRole('user');
         }
     }
 }

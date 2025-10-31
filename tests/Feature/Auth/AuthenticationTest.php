@@ -27,11 +27,11 @@ test('regular users can authenticate and are redirected to dashboard', function 
 
 test('admin users can authenticate and are redirected to admin dashboard', function () {
     $user = User::factory()->withoutTwoFactor()->create();
-    
+
     // Create admin role if it doesn't exist
     $adminRole = \Spatie\Permission\Models\Role::firstOrCreate(['name' => 'admin']);
     $user->assignRole($adminRole);
-    
+
     // Verify role is assigned
     expect($user->fresh()->hasRole('admin'))->toBeTrue();
 

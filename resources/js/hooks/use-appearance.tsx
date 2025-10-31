@@ -79,7 +79,10 @@ export function useAppearance() {
         appearanceSettingsEnabled = features.appearanceSettings ?? true;
     } catch (error) {
         // Not in Inertia context, use defaults or window feature flags
-        const featureFlags = typeof window !== 'undefined' ? window.__FEATURE_FLAGS__ : undefined;
+        const featureFlags =
+            typeof window !== 'undefined'
+                ? window.__FEATURE_FLAGS__
+                : undefined;
         if (featureFlags) {
             defaultAppearance = featureFlags.defaultAppearance || 'system';
             appearanceSettingsEnabled = featureFlags.appearanceSettings ?? true;
