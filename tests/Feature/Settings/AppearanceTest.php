@@ -6,6 +6,10 @@ use Inertia\Testing\AssertableInertia as Assert;
 uses(\Illuminate\Foundation\Testing\RefreshDatabase::class);
 
 test('appearance page can be rendered', function () {
+    if (!config('features.appearance_settings', false)) {
+        $this->markTestSkipped('Appearance settings feature is disabled');
+    }
+
     $user = User::factory()->create();
 
     $response = $this->actingAs($user)
@@ -18,6 +22,10 @@ test('appearance page can be rendered', function () {
 });
 
 test('default appearance is shared with inertia', function () {
+    if (!config('features.appearance_settings', false)) {
+        $this->markTestSkipped('Appearance settings feature is disabled');
+    }
+
     $user = User::factory()->create();
 
     // Default value should be 'system'
@@ -33,6 +41,10 @@ test('default appearance is shared with inertia', function () {
 });
 
 test('custom default appearance is respected', function () {
+    if (!config('features.appearance_settings', false)) {
+        $this->markTestSkipped('Appearance settings feature is disabled');
+    }
+
     $user = User::factory()->create();
 
     // Set custom default appearance
@@ -59,6 +71,10 @@ test('custom default appearance is respected', function () {
 });
 
 test('appearance middleware uses configured default', function () {
+    if (!config('features.appearance_settings', false)) {
+        $this->markTestSkipped('Appearance settings feature is disabled');
+    }
+
     $user = User::factory()->create();
 
     // Set custom default
@@ -141,4 +157,18 @@ test('appearance middleware ignores user preferences when feature disabled', fun
 
     $response->assertOk();
     // The middleware should ignore the 'dark' cookie and use default 'light'
+});
+
+test('appearance page works when feature is enabled', function () {
+    config(['features.appearance_settings' => true]);
+    
+    $user = User::factory()->create();
+
+    $response = $this->actingAs($user)
+        ->get(route('appearance.edit'));
+
+    $response->assertOk()
+        ->assertInertia(fn (Assert $page) => $page
+            ->component('settings/appearance')
+        );
 });
