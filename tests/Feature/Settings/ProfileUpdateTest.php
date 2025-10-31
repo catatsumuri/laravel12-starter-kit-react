@@ -24,7 +24,8 @@ test('profile information can be updated', function () {
 
     $response
         ->assertSessionHasNoErrors()
-        ->assertRedirect(route('profile.edit'));
+        ->assertRedirect(route('profile.edit'))
+        ->assertSessionHas('success', 'Profile updated successfully.');
 
     $user->refresh();
 
@@ -45,7 +46,8 @@ test('email verification status is unchanged when the email address is unchanged
 
     $response
         ->assertSessionHasNoErrors()
-        ->assertRedirect(route('profile.edit'));
+        ->assertRedirect(route('profile.edit'))
+        ->assertSessionHas('success', 'Profile updated successfully.');
 
     expect($user->refresh()->email_verified_at)->not->toBeNull();
 });
@@ -61,7 +63,8 @@ test('user can delete their account', function () {
 
     $response
         ->assertSessionHasNoErrors()
-        ->assertRedirect(route('home'));
+        ->assertRedirect(route('home'))
+        ->assertSessionHas('success', 'Account deleted successfully.');
 
     $this->assertGuest();
     expect($user->fresh())->toBeNull();
