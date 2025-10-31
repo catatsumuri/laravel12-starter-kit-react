@@ -19,7 +19,9 @@ class RegisteredUserController extends Controller
      */
     public function create(): Response
     {
-        return Inertia::render('auth/register');
+        return Inertia::render('auth/register', [
+            'showPasswordToggle' => config('ui.show_password_toggle'),
+        ]);
     }
 
     /**

@@ -5,6 +5,10 @@ use Inertia\Inertia;
 use Laravel\Fortify\Features;
 
 Route::get('/', function () {
+    if (config('ui.disable_welcome_page')) {
+        return redirect()->route('login');
+    }
+
     return Inertia::render('welcome', [
         'canRegister' => Features::enabled(Features::registration()),
     ]);
