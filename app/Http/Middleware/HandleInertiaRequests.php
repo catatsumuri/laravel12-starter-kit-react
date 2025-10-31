@@ -57,6 +57,8 @@ class HandleInertiaRequests extends Middleware
                 'twoFactorAuthentication' => config('features.two_factor_authentication'),
                 'appearanceSettings' => config('features.appearance_settings', true),
                 'defaultAppearance' => config('features.default_appearance', 'system'),
+                'registration' => config('user.registration_enabled'),
+                'accountDeletion' => config('user.account_deletion_enabled'),
             ],
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
             'flash' => empty($flash) ? null : $flash,

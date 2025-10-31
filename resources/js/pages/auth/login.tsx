@@ -9,7 +9,8 @@ import AuthLayout from '@/layouts/auth-layout';
 import { register } from '@/routes';
 import { store } from '@/routes/login';
 import { request } from '@/routes/password';
-import { Form, Head } from '@inertiajs/react';
+import { type SharedData } from '@/types';
+import { Form, Head, usePage } from '@inertiajs/react';
 import { Eye, EyeOff } from 'lucide-react';
 import { useState } from 'react';
 
@@ -17,22 +18,20 @@ interface LoginProps {
     status?: string;
     canResetPassword: boolean;
     showPasswordToggle: boolean;
-    canRegister: boolean;
 }
 
 export default function Login({
     status,
     canResetPassword,
     showPasswordToggle,
-    canRegister,
 }: LoginProps) {
+    const { features } = usePage<SharedData>().props;
     const [showPassword, setShowPassword] = useState(false);
 
     const getPasswordFieldType = () => {
         if (!showPasswordToggle) return 'password';
         return showPassword ? 'text' : 'password';
     };
-
     return (
         <AuthLayout
             title="Log in to your account"
@@ -85,35 +84,21 @@ export default function Login({
                                         tabIndex={2}
                                         autoComplete="current-password"
                                         placeholder="Password"
-                                        className={
-                                            showPasswordToggle ? 'pr-10' : ''
-                                        }
+                                        className={showPasswordToggle ? 'pr-10' : ''}
                                     />
                                     {showPasswordToggle && (
                                         <button
                                             type="button"
-                                            onClick={() =>
-                                                setShowPassword(!showPassword)
-                                            }
+                                            onClick={() => setShowPassword(!showPassword)}
                                             className="absolute top-1/2 right-3 -translate-y-1/2 text-muted-foreground transition-colors hover:text-foreground"
-                                            aria-label={
-                                                showPassword
-                                                    ? 'Hide password'
-                                                    : 'Show password'
-                                            }
+                                            aria-label={showPassword ? 'Hide password' : 'Show password'}
                                             aria-pressed={showPassword}
                                             data-test="password-toggle"
                                         >
                                             {showPassword ? (
-                                                <EyeOff
-                                                    className="h-4 w-4"
-                                                    aria-hidden="true"
-                                                />
+                                                <EyeOff className="h-4 w-4" aria-hidden="true" />
                                             ) : (
-                                                <Eye
-                                                    className="h-4 w-4"
-                                                    aria-hidden="true"
-                                                />
+                                                <Eye className="h-4 w-4" aria-hidden="true" />
                                             )}
                                         </button>
                                     )}
@@ -142,7 +127,7 @@ export default function Login({
                             </Button>
                         </div>
 
-                        {canRegister && (
+                        {features.registration && (
                             <div className="text-center text-sm text-muted-foreground">
                                 Don't have an account?{' '}
                                 <TextLink href={register()} tabIndex={5}>

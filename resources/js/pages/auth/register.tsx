@@ -1,6 +1,7 @@
 import { login } from '@/routes';
 import { store } from '@/routes/register';
-import { Form, Head } from '@inertiajs/react';
+import { Form, Head, router, usePage } from '@inertiajs/react';
+import { useEffect, useState } from 'react';
 
 import InputError from '@/components/input-error';
 import TextLink from '@/components/text-link';
@@ -9,17 +10,23 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Spinner } from '@/components/ui/spinner';
 import AuthLayout from '@/layouts/auth-layout';
+import { type SharedData } from '@/types';
 import { Eye, EyeOff } from 'lucide-react';
-import { useState } from 'react';
 
 interface RegisterProps {
     showPasswordToggle: boolean;
 }
 
 export default function Register({ showPasswordToggle }: RegisterProps) {
+    const { features } = usePage<SharedData>().props;
     const [showPassword, setShowPassword] = useState(false);
-    const [showPasswordConfirmation, setShowPasswordConfirmation] =
-        useState(false);
+    const [showPasswordConfirmation, setShowPasswordConfirmation] = useState(false);
+
+    useEffect(() => {
+        if (!features.registration) {
+            router.visit(login());
+        }
+    }, [features.registration]);
 
     const getPasswordFieldType = (isVisible: boolean) => {
         if (!showPasswordToggle) return 'password';
@@ -77,43 +84,27 @@ export default function Register({ showPasswordToggle }: RegisterProps) {
                                 <div className="relative">
                                     <Input
                                         id="password"
-                                        type={getPasswordFieldType(
-                                            showPassword,
-                                        )}
+                                        type={getPasswordFieldType(showPassword)}
                                         required
                                         tabIndex={3}
                                         autoComplete="new-password"
                                         name="password"
                                         placeholder="Password"
-                                        className={
-                                            showPasswordToggle ? 'pr-10' : ''
-                                        }
+                                        className={showPasswordToggle ? 'pr-10' : ''}
                                     />
                                     {showPasswordToggle && (
                                         <button
                                             type="button"
-                                            onClick={() =>
-                                                setShowPassword(!showPassword)
-                                            }
+                                            onClick={() => setShowPassword(!showPassword)}
                                             className="absolute top-1/2 right-3 -translate-y-1/2 text-muted-foreground transition-colors hover:text-foreground"
-                                            aria-label={
-                                                showPassword
-                                                    ? 'Hide password'
-                                                    : 'Show password'
-                                            }
+                                            aria-label={showPassword ? 'Hide password' : 'Show password'}
                                             aria-pressed={showPassword}
                                             data-test="password-toggle"
                                         >
                                             {showPassword ? (
-                                                <EyeOff
-                                                    className="h-4 w-4"
-                                                    aria-hidden="true"
-                                                />
+                                                <EyeOff className="h-4 w-4" aria-hidden="true" />
                                             ) : (
-                                                <Eye
-                                                    className="h-4 w-4"
-                                                    aria-hidden="true"
-                                                />
+                                                <Eye className="h-4 w-4" aria-hidden="true" />
                                             )}
                                         </button>
                                     )}
@@ -128,54 +119,32 @@ export default function Register({ showPasswordToggle }: RegisterProps) {
                                 <div className="relative">
                                     <Input
                                         id="password_confirmation"
-                                        type={getPasswordFieldType(
-                                            showPasswordConfirmation,
-                                        )}
+                                        type={getPasswordFieldType(showPasswordConfirmation)}
                                         required
                                         tabIndex={4}
                                         autoComplete="new-password"
                                         name="password_confirmation"
                                         placeholder="Confirm password"
-                                        className={
-                                            showPasswordToggle ? 'pr-10' : ''
-                                        }
+                                        className={showPasswordToggle ? 'pr-10' : ''}
                                     />
                                     {showPasswordToggle && (
                                         <button
                                             type="button"
-                                            onClick={() =>
-                                                setShowPasswordConfirmation(
-                                                    !showPasswordConfirmation,
-                                                )
-                                            }
+                                            onClick={() => setShowPasswordConfirmation(!showPasswordConfirmation)}
                                             className="absolute top-1/2 right-3 -translate-y-1/2 text-muted-foreground transition-colors hover:text-foreground"
-                                            aria-label={
-                                                showPasswordConfirmation
-                                                    ? 'Hide password confirmation'
-                                                    : 'Show password confirmation'
-                                            }
-                                            aria-pressed={
-                                                showPasswordConfirmation
-                                            }
+                                            aria-label={showPasswordConfirmation ? 'Hide password confirmation' : 'Show password confirmation'}
+                                            aria-pressed={showPasswordConfirmation}
                                             data-test="password-confirmation-toggle"
                                         >
                                             {showPasswordConfirmation ? (
-                                                <EyeOff
-                                                    className="h-4 w-4"
-                                                    aria-hidden="true"
-                                                />
+                                                <EyeOff className="h-4 w-4" aria-hidden="true" />
                                             ) : (
-                                                <Eye
-                                                    className="h-4 w-4"
-                                                    aria-hidden="true"
-                                                />
+                                                <Eye className="h-4 w-4" aria-hidden="true" />
                                             )}
                                         </button>
                                     )}
                                 </div>
-                                <InputError
-                                    message={errors.password_confirmation}
-                                />
+                                <InputError message={errors.password_confirmation} />
                             </div>
 
                             <Button

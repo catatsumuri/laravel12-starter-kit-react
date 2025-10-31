@@ -27,6 +27,8 @@ export interface Features {
     twoFactorAuthentication: boolean;
     appearanceSettings: boolean;
     defaultAppearance: 'light' | 'dark' | 'system';
+    registration: boolean;
+    accountDeletion: boolean;
 }
 
 export interface SharedData {

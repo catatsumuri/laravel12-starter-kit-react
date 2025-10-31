@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\User;
+use Illuminate\Support\Facades\Config;
 
 test('profile page is displayed', function () {
     $user = User::factory()->create();
@@ -53,6 +54,8 @@ test('email verification status is unchanged when the email address is unchanged
 });
 
 test('user can delete their account', function () {
+    Config::set('user.account_deletion_enabled', true);
+    
     $user = User::factory()->create();
 
     $response = $this
@@ -71,6 +74,8 @@ test('user can delete their account', function () {
 });
 
 test('correct password must be provided to delete account', function () {
+    Config::set('user.account_deletion_enabled', true);
+    
     $user = User::factory()->create();
 
     $response = $this

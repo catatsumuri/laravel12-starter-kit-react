@@ -144,7 +144,7 @@ return [
     */
 
     'features' => [
-        Features::registration(),
+        // Registration is handled by custom routes in routes/auth.php with middleware
         Features::resetPasswords(),
         Features::emailVerification(),
         config('features.two_factor_authentication')
