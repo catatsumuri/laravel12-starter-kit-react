@@ -1,4 +1,5 @@
 import ProfileController from '@/actions/App/Http/Controllers/Settings/ProfileController';
+import AvatarUpload from '@/components/avatar-upload';
 import DeleteUser from '@/components/delete-user';
 import HeadingSmall from '@/components/heading-small';
 import InputError from '@/components/input-error';
@@ -11,15 +12,16 @@ import { formatDateTime, formatRelativeTime } from '@/lib/utils';
 import { send } from '@/routes/verification';
 import { type SharedData } from '@/types';
 import { Form, Head, Link, usePage } from '@inertiajs/react';
+import { useRef, useState } from 'react';
 
 export default function Profile({
     mustVerifyEmail,
 }: {
     mustVerifyEmail: boolean;
 }) {
-    const {
-        props: { auth },
-    } = usePage<SharedData>();
+    const { auth } = usePage<SharedData>().props;
+    const [avatarFile, setAvatarFile] = useState<File | null>(null);
+    const avatarUploadRef = useRef<{ clearSelection: () => void }>(null);
 
     return (
         <AppLayout>
@@ -44,13 +46,34 @@ export default function Profile({
 
                     <Form
                         {...ProfileController.update.form()}
+                        transform={(data) => {
+                            const formData = new FormData();
+                            Object.entries(data).forEach(([key, value]) => {
+                                formData.append(key, value as string);
+                            });
+                            if (avatarFile) {
+                                formData.append('avatar', avatarFile);
+                            }
+                            return formData;
+                        }}
                         options={{
                             preserveScroll: true,
+                            onSuccess: () => {
+                                avatarUploadRef.current?.clearSelection();
+                            },
                         }}
                         className="space-y-6"
                     >
                         {({ processing, errors }) => (
                             <>
+                                <AvatarUpload
+                                    ref={avatarUploadRef}
+                                    currentAvatar={auth.user.avatar}
+                                    userName={auth.user.name}
+                                    onFileSelect={setAvatarFile}
+                                    error={errors.avatar}
+                                />
+
                                 <div className="grid gap-2">
                                     <Label htmlFor="name">Name</Label>
 
