@@ -1,6 +1,7 @@
 import { Transition } from '@headlessui/react';
 import { Form, Head, Link } from '@inertiajs/react';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import HeadingSmall from '@/components/heading-small';
 import InputError from '@/components/input-error';
@@ -32,17 +33,6 @@ import { index as adminSettingsEnvironmentIndex } from '@/routes/admin/settings/
 import { type BreadcrumbItem } from '@/types';
 import { AlertTriangle, FileText } from 'lucide-react';
 
-const breadcrumbs: BreadcrumbItem[] = [
-    {
-        title: 'Admin',
-        href: adminSettingsIndex().url,
-    },
-    {
-        title: 'Settings',
-        href: adminSettingsIndex().url,
-    },
-];
-
 interface AdminSettingsIndexProps {
     appName: string;
     appUrl: string;
@@ -68,10 +58,22 @@ export default function AdminSettingsIndex({
     awsBucket,
     awsUsePathStyleEndpoint,
 }: AdminSettingsIndexProps) {
+    const { t } = useTranslation();
     const [showDebugWarning, setShowDebugWarning] = useState(false);
     const [appDebugValue, setAppDebugValue] = useState(appDebug);
     const [awsUsePathStyleEndpointValue, setAwsUsePathStyleEndpointValue] =
         useState(awsUsePathStyleEndpoint);
+
+    const breadcrumbs: BreadcrumbItem[] = [
+        {
+            title: 'Admin',
+            href: adminSettingsIndex().url,
+        },
+        {
+            title: t('admin.settings.breadcrumb'),
+            href: adminSettingsIndex().url,
+        },
+    ];
 
     function handleDebugChange(checked: boolean | 'indeterminate') {
         if (checked === true) {
@@ -94,12 +96,12 @@ export default function AdminSettingsIndex({
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Admin Settings" />
+            <Head title={t('admin.settings.head_title')} />
 
             <div className="flex h-full flex-1 flex-col gap-6 overflow-x-auto rounded-xl p-6">
                 <HeadingSmall
-                    title="Admin Settings"
-                    description="Manage your application settings"
+                    title={t('admin.settings.section_title')}
+                    description={t('admin.settings.section_description')}
                 />
 
                 <div className="rounded-lg border bg-card p-6 shadow-sm">
@@ -113,13 +115,13 @@ export default function AdminSettingsIndex({
                             <div className="space-y-6">
                                 <div>
                                     <h3 className="mb-4 text-lg font-semibold">
-                                        Application Settings
+                                        {t('admin.settings.application_settings')}
                                     </h3>
 
                                     <div className="space-y-4">
                                         <div className="grid gap-2">
                                             <Label htmlFor="app_name">
-                                                Application Name
+                                                {t('admin.settings.app_name')}
                                             </Label>
 
                                             <Input
@@ -128,7 +130,7 @@ export default function AdminSettingsIndex({
                                                 className="mt-1 block w-full"
                                                 defaultValue={appName}
                                                 required
-                                                placeholder="Application Name"
+                                                placeholder={t('admin.settings.app_name')}
                                             />
 
                                             <InputError
@@ -139,7 +141,7 @@ export default function AdminSettingsIndex({
 
                                         <div className="grid gap-2">
                                             <Label htmlFor="app_url">
-                                                Application URL
+                                                {t('admin.settings.app_url')}
                                             </Label>
 
                                             <Input
@@ -160,7 +162,7 @@ export default function AdminSettingsIndex({
 
                                         <div className="grid gap-2">
                                             <Label htmlFor="app_locale">
-                                                Locale
+                                                {t('admin.settings.locale')}
                                             </Label>
 
                                             <Select
@@ -168,14 +170,14 @@ export default function AdminSettingsIndex({
                                                 defaultValue={appLocale}
                                             >
                                                 <SelectTrigger id="app_locale">
-                                                    <SelectValue placeholder="Select locale" />
+                                                    <SelectValue placeholder={t('admin.settings.locale_placeholder')} />
                                                 </SelectTrigger>
                                                 <SelectContent>
                                                     <SelectItem value="ja">
-                                                        Japanese (ja)
+                                                        {t('admin.settings.japanese')}
                                                     </SelectItem>
                                                     <SelectItem value="en">
-                                                        English (en)
+                                                        {t('admin.settings.english')}
                                                     </SelectItem>
                                                 </SelectContent>
                                             </Select>
@@ -188,7 +190,7 @@ export default function AdminSettingsIndex({
 
                                         <div className="grid gap-2">
                                             <Label htmlFor="app_fallback_locale">
-                                                Fallback Locale
+                                                {t('admin.settings.fallback_locale')}
                                             </Label>
 
                                             <Select
@@ -196,14 +198,14 @@ export default function AdminSettingsIndex({
                                                 defaultValue={appFallbackLocale}
                                             >
                                                 <SelectTrigger id="app_fallback_locale">
-                                                    <SelectValue placeholder="Select fallback locale" />
+                                                    <SelectValue placeholder={t('admin.settings.fallback_locale_placeholder')} />
                                                 </SelectTrigger>
                                                 <SelectContent>
                                                     <SelectItem value="ja">
-                                                        Japanese (ja)
+                                                        {t('admin.settings.japanese')}
                                                     </SelectItem>
                                                     <SelectItem value="en">
-                                                        English (en)
+                                                        {t('admin.settings.english')}
                                                     </SelectItem>
                                                 </SelectContent>
                                             </Select>
@@ -220,18 +222,16 @@ export default function AdminSettingsIndex({
 
                                 <div className="border-t pt-6">
                                     <h3 className="mb-4 text-lg font-semibold">
-                                        Debug Settings
+                                        {t('admin.settings.debug_settings')}
                                     </h3>
 
                                     <div className="space-y-4 rounded-lg border border-yellow-100 bg-yellow-50 p-4 dark:border-yellow-200/10 dark:bg-yellow-700/10">
                                         <div className="relative space-y-0.5 text-yellow-600 dark:text-yellow-100">
                                             <p className="font-medium">
-                                                Warning
+                                                {t('admin.settings.debug_warning_title')}
                                             </p>
                                             <p className="text-sm">
-                                                Enable debug mode to display
-                                                detailed error messages. Only
-                                                use in development environments.
+                                                {t('admin.settings.debug_warning_message')}
                                             </p>
                                         </div>
 
@@ -254,7 +254,7 @@ export default function AdminSettingsIndex({
                                                 htmlFor="app_debug"
                                                 className="cursor-pointer"
                                             >
-                                                Enable Debug Mode
+                                                {t('admin.settings.enable_debug_mode')}
                                             </Label>
                                         </div>
 
@@ -276,19 +276,14 @@ export default function AdminSettingsIndex({
                                     <DialogContent>
                                         <DialogTitle className="flex items-center gap-2">
                                             <AlertTriangle className="h-5 w-5 text-yellow-600" />
-                                            Enable Debug Mode?
+                                            {t('admin.settings.debug_modal_title')}
                                         </DialogTitle>
                                         <DialogDescription>
-                                            Enabling debug mode will display
-                                            detailed error messages and stack
-                                            traces. This should only be enabled
-                                            in development environments.
+                                            {t('admin.settings.debug_modal_description')}
                                             <br />
                                             <br />
                                             <strong className="text-red-600">
-                                                Warning: Never enable debug mode
-                                                in production as it can expose
-                                                sensitive information.
+                                                {t('admin.settings.debug_modal_warning')}
                                             </strong>
                                         </DialogDescription>
 
@@ -298,7 +293,7 @@ export default function AdminSettingsIndex({
                                                     variant="secondary"
                                                     onClick={cancelDebugEnable}
                                                 >
-                                                    Cancel
+                                                    {t('common.cancel')}
                                                 </Button>
                                             </DialogClose>
 
@@ -306,7 +301,7 @@ export default function AdminSettingsIndex({
                                                 variant="destructive"
                                                 onClick={confirmDebugEnable}
                                             >
-                                                Enable Debug Mode
+                                                {t('admin.settings.enable_debug_mode')}
                                             </Button>
                                         </DialogFooter>
                                     </DialogContent>
@@ -314,13 +309,13 @@ export default function AdminSettingsIndex({
 
                                 <div className="border-t pt-6">
                                     <h3 className="mb-4 text-lg font-semibold">
-                                        AWS Settings
+                                        {t('admin.settings.aws_settings')}
                                     </h3>
 
                                     <div className="space-y-4">
                                         <div className="grid gap-2">
                                             <Label htmlFor="aws_access_key_id">
-                                                AWS Access Key ID
+                                                {t('admin.settings.aws_access_key_id')}
                                             </Label>
 
                                             <Input
@@ -330,7 +325,7 @@ export default function AdminSettingsIndex({
                                                 defaultValue={
                                                     awsAccessKeyId || ''
                                                 }
-                                                placeholder="AWS Access Key ID"
+                                                placeholder={t('admin.settings.aws_access_key_id')}
                                             />
 
                                             <InputError
@@ -343,7 +338,7 @@ export default function AdminSettingsIndex({
 
                                         <div className="grid gap-2">
                                             <Label htmlFor="aws_secret_access_key">
-                                                AWS Secret Access Key
+                                                {t('admin.settings.aws_secret_access_key')}
                                             </Label>
 
                                             <Input
@@ -355,7 +350,7 @@ export default function AdminSettingsIndex({
                                                 defaultValue={
                                                     awsSecretAccessKey || ''
                                                 }
-                                                placeholder="AWS Secret Access Key"
+                                                placeholder={t('admin.settings.aws_secret_access_key')}
                                             />
 
                                             <InputError
@@ -368,7 +363,7 @@ export default function AdminSettingsIndex({
 
                                         <div className="grid gap-2">
                                             <Label htmlFor="aws_default_region">
-                                                AWS Default Region
+                                                {t('admin.settings.aws_default_region')}
                                             </Label>
 
                                             <Input
@@ -391,7 +386,7 @@ export default function AdminSettingsIndex({
 
                                         <div className="grid gap-2">
                                             <Label htmlFor="aws_bucket">
-                                                AWS Bucket
+                                                {t('admin.settings.aws_bucket')}
                                             </Label>
 
                                             <Input
@@ -431,14 +426,14 @@ export default function AdminSettingsIndex({
                                                 htmlFor="aws_use_path_style_endpoint"
                                                 className="cursor-pointer"
                                             >
-                                                Use Path Style Endpoint
+                                                {t('admin.settings.use_path_style_endpoint')}
                                             </Label>
                                         </div>
                                     </div>
                                 </div>
 
                                 <div className="flex items-center gap-4">
-                                    <Button disabled={processing}>Save</Button>
+                                    <Button disabled={processing}>{t('common.save')}</Button>
 
                                     <Transition
                                         show={recentlySuccessful}
@@ -448,7 +443,7 @@ export default function AdminSettingsIndex({
                                         leaveTo="opacity-0"
                                     >
                                         <p className="text-sm text-neutral-600">
-                                            Saved
+                                            {t('common.saved')}
                                         </p>
                                     </Transition>
                                 </div>
@@ -467,11 +462,10 @@ export default function AdminSettingsIndex({
                         </div>
                         <div className="flex-1">
                             <h3 className="text-lg font-semibold group-hover:text-primary">
-                                Environment & Configuration
+                                {t('admin.settings.environment_config_title')}
                             </h3>
                             <p className="mt-1 text-sm text-muted-foreground">
-                                View environment variables, configuration
-                                values, and database settings
+                                {t('admin.settings.environment_config_description')}
                             </p>
                         </div>
                     </div>

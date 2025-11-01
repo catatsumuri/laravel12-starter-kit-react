@@ -4,6 +4,7 @@ import { show } from '@/routes/admin/users';
 import { type ActivityLog, type BreadcrumbItem, type User } from '@/types';
 import { Head, Link, router } from '@inertiajs/react';
 import { Activity, ArrowLeft, Clock, FileText } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 interface PaginationLink {
     url: string | null;
@@ -26,9 +27,11 @@ interface Props {
 }
 
 export default function Activities({ user, activities }: Props) {
+    const { t } = useTranslation();
+
     const breadcrumbs: BreadcrumbItem[] = [
         {
-            title: 'Users',
+            title: t('admin.users.breadcrumb'),
             href: '/admin/users',
         },
         {
@@ -36,7 +39,7 @@ export default function Activities({ user, activities }: Props) {
             href: show(user).url,
         },
         {
-            title: 'Activity Log',
+            title: t('admin.users.breadcrumb_activity_log'),
             href: `/admin/users/${user.id}/activities`,
         },
     ];
@@ -61,7 +64,7 @@ export default function Activities({ user, activities }: Props) {
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title={`Activity Log - ${user.name}`} />
+            <Head title={`${t('admin.users.head_title_activities')} ${user.name}`} />
 
             <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
                 <div className="flex items-center justify-between">
@@ -73,10 +76,10 @@ export default function Activities({ user, activities }: Props) {
                         </Button>
                         <div>
                             <h1 className="text-2xl font-semibold">
-                                Activity Log
+                                {t('admin.users.page_title_activity_log')}
                             </h1>
                             <p className="text-sm text-muted-foreground">
-                                Actions performed by {user.name}
+                                {t('admin.users.activity_log_description')} {user.name}
                             </p>
                         </div>
                     </div>
@@ -88,12 +91,12 @@ export default function Activities({ user, activities }: Props) {
                             <div className="flex items-center gap-2">
                                 <Activity className="size-5" />
                                 <span className="font-semibold">
-                                    All Activities
+                                    {t('admin.users.all_activities')}
                                 </span>
                             </div>
                             <span className="text-sm text-muted-foreground">
                                 {activities.total}{' '}
-                                {activities.total === 1 ? 'entry' : 'entries'}
+                                {activities.total === 1 ? t('admin.users.entry') : t('admin.users.entries')}
                             </span>
                         </div>
                     </div>
@@ -134,7 +137,7 @@ export default function Activities({ user, activities }: Props) {
                                             <div className="flex items-center gap-2 text-sm text-muted-foreground">
                                                 <FileText className="size-4" />
                                                 <span>
-                                                    Target:{' '}
+                                                    {t('admin.users.target')}{' '}
                                                     <span className="font-medium">
                                                         {activity.subject
                                                             ?.type ||
@@ -163,7 +166,7 @@ export default function Activities({ user, activities }: Props) {
                                                             .old && (
                                                             <div className="space-y-1">
                                                                 <p className="text-xs font-semibold text-destructive uppercase">
-                                                                    Old Values
+                                                                    {t('admin.users.old_values')}
                                                                 </p>
                                                                 <div className="space-y-1 rounded bg-background p-2">
                                                                     {Object.entries(
@@ -205,8 +208,8 @@ export default function Activities({ user, activities }: Props) {
                                                                     {activity
                                                                         .properties
                                                                         .old
-                                                                        ? 'New Values'
-                                                                        : 'Values'}
+                                                                        ? t('admin.users.new_values')
+                                                                        : t('admin.users.values')}
                                                                 </p>
                                                                 <div className="space-y-1 rounded bg-background p-2">
                                                                     {Object.entries(
@@ -252,10 +255,10 @@ export default function Activities({ user, activities }: Props) {
                             <div className="flex flex-col items-center justify-center py-12 text-center">
                                 <Activity className="size-12 text-muted-foreground/50" />
                                 <p className="mt-4 text-sm font-medium">
-                                    No activity logs found
+                                    {t('admin.users.no_activity_logs')}
                                 </p>
                                 <p className="mt-1 text-sm text-muted-foreground">
-                                    This user has not performed any actions yet.
+                                    {t('admin.users.no_activity_description')}
                                 </p>
                             </div>
                         )}

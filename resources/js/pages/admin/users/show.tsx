@@ -20,12 +20,14 @@ import {
     Trash2,
     User as UserIcon,
 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
     user: User;
 }
 
 export default function Show({ user }: Props) {
+    const { t } = useTranslation();
     const { props } = usePage();
     const auth = props.auth as { user: User };
 
@@ -35,18 +37,18 @@ export default function Show({ user }: Props) {
 
     const breadcrumbs: BreadcrumbItem[] = [
         {
-            title: 'Users',
+            title: t('admin.users.breadcrumb'),
             href: index().url,
         },
         {
-            title: 'Details',
+            title: t('admin.users.breadcrumb_details'),
             href: show(user).url,
         },
     ];
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title={`User: ${user.name}`} />
+            <Head title={`${t('admin.users.head_title_show')} ${user.name}`} />
 
             <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
                 <div className="flex items-center justify-between">
@@ -56,17 +58,17 @@ export default function Show({ user }: Props) {
                                 <ArrowLeft className="size-4" />
                             </Link>
                         </Button>
-                        <h1 className="text-2xl font-semibold">User Details</h1>
+                        <h1 className="text-2xl font-semibold">{t('admin.users.page_title_details')}</h1>
                     </div>
                     <div className="flex gap-2">
                         <Button variant="outline" asChild>
                             <Link href={`/admin/users/${user.id}/activities`}>
                                 <Activity className="mr-2 size-4" />
-                                Activity Log
+                                {t('admin.users.activity_log_button')}
                             </Link>
                         </Button>
                         <Button asChild>
-                            <Link href={edit(user)}>Edit User</Link>
+                            <Link href={edit(user)}>{t('admin.users.edit_user')}</Link>
                         </Button>
                         <Dialog>
                             <DialogTrigger asChild>
@@ -75,26 +77,25 @@ export default function Show({ user }: Props) {
                                     disabled={user.id === auth.user.id}
                                 >
                                     <Trash2 className="mr-2 size-4" />
-                                    Delete
+                                    {t('admin.users.delete_button_short')}
                                 </Button>
                             </DialogTrigger>
                             <DialogContent>
-                                <DialogTitle>Delete User</DialogTitle>
+                                <DialogTitle>{t('admin.users.delete_user')}</DialogTitle>
                                 <DialogDescription>
-                                    Are you sure you want to delete {user.name}?
-                                    This action cannot be undone.
+                                    {t('admin.users.delete_confirmation').replace('{name}', user.name)}
                                 </DialogDescription>
                                 <DialogFooter className="gap-2">
                                     <DialogClose asChild>
                                         <Button variant="secondary">
-                                            Cancel
+                                            {t('common.cancel')}
                                         </Button>
                                     </DialogClose>
                                     <Button
                                         variant="destructive"
                                         onClick={handleDelete}
                                     >
-                                        Delete User
+                                        {t('admin.users.delete_button')}
                                     </Button>
                                 </DialogFooter>
                             </DialogContent>
@@ -109,7 +110,7 @@ export default function Show({ user }: Props) {
                                 <UserIcon className="mt-1 size-5 text-muted-foreground" />
                                 <div className="flex-1">
                                     <p className="text-sm text-muted-foreground">
-                                        Name
+                                        {t('common.name')}
                                     </p>
                                     <p className="text-base font-medium">
                                         {user.name}
@@ -121,7 +122,7 @@ export default function Show({ user }: Props) {
                                 <Mail className="mt-1 size-5 text-muted-foreground" />
                                 <div className="flex-1">
                                     <p className="text-sm text-muted-foreground">
-                                        Email
+                                        {t('common.email')}
                                     </p>
                                     <p className="text-base font-medium">
                                         {user.email}
@@ -133,7 +134,7 @@ export default function Show({ user }: Props) {
                                 <Calendar className="mt-1 size-5 text-muted-foreground" />
                                 <div className="flex-1">
                                     <p className="text-sm text-muted-foreground">
-                                        Created At
+                                        {t('admin.users.created_at')}
                                     </p>
                                     <p className="text-base font-medium">
                                         {new Date(
@@ -148,7 +149,7 @@ export default function Show({ user }: Props) {
                                     <Calendar className="mt-1 size-5 text-muted-foreground" />
                                     <div className="flex-1">
                                         <p className="text-sm text-muted-foreground">
-                                            Email Verified At
+                                            {t('admin.users.email_verified_at')}
                                         </p>
                                         <p className="text-base font-medium">
                                             {new Date(

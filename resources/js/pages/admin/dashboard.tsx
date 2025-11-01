@@ -4,13 +4,7 @@ import admin from '@/routes/admin';
 import { type ActivityLog, type BreadcrumbItem } from '@/types';
 import { Head, InfiniteScroll } from '@inertiajs/react';
 import { Activity, Clock, FileText, User } from 'lucide-react';
-
-const breadcrumbs: BreadcrumbItem[] = [
-    {
-        title: 'Admin Dashboard',
-        href: admin.dashboard.url(),
-    },
-];
+import { useTranslation } from 'react-i18next';
 
 interface PaginatedActivities {
     data: ActivityLog[];
@@ -25,6 +19,15 @@ interface Props {
 }
 
 export default function AdminDashboard({ recentActivities }: Props) {
+    const { t } = useTranslation();
+
+    const breadcrumbs: BreadcrumbItem[] = [
+        {
+            title: t('admin.dashboard.breadcrumb'),
+            href: admin.dashboard.url(),
+        },
+    ];
+
     const getActionBadgeColor = (description: string) => {
         switch (description) {
             case 'created':
@@ -45,12 +48,12 @@ export default function AdminDashboard({ recentActivities }: Props) {
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Admin Dashboard" />
+            <Head title={t('admin.dashboard.head_title')} />
             <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
                 <div className="mb-4">
-                    <h1 className="text-2xl font-bold">Admin Dashboard</h1>
+                    <h1 className="text-2xl font-bold">{t('admin.dashboard.page_title')}</h1>
                     <p className="text-muted-foreground">
-                        Welcome to the administrator dashboard
+                        {t('admin.dashboard.welcome_message')}
                     </p>
                 </div>
                 <div className="grid auto-rows-min gap-4 md:grid-cols-3">
@@ -72,14 +75,14 @@ export default function AdminDashboard({ recentActivities }: Props) {
                             <div className="flex items-center gap-2">
                                 <Activity className="size-5" />
                                 <span className="font-semibold">
-                                    Recent Activity
+                                    {t('admin.dashboard.recent_activity')}
                                 </span>
                             </div>
                             <span className="text-sm text-muted-foreground">
                                 {recentActivities.total}{' '}
                                 {recentActivities.total === 1
-                                    ? 'entry'
-                                    : 'entries'}
+                                    ? t('admin.dashboard.entry')
+                                    : t('admin.dashboard.entries')}
                             </span>
                         </div>
                     </div>
@@ -90,14 +93,14 @@ export default function AdminDashboard({ recentActivities }: Props) {
                         previous={({ loading, fetch, hasMore }) =>
                             hasMore && (
                                 <button onClick={fetch}>
-                                    {loading ? 'Loading...' : 'Load previous'}
+                                    {loading ? t('admin.dashboard.loading') : t('admin.dashboard.load_previous')}
                                 </button>
                             )
                         }
                         next={({ loading, fetch, hasMore }) =>
                             hasMore && (
                                 <button onClick={fetch}>
-                                    {loading ? 'Loading...' : 'Load more'}
+                                    {loading ? t('admin.dashboard.loading') : t('admin.dashboard.load_more')}
                                 </button>
                             )
                         }
@@ -136,7 +139,7 @@ export default function AdminDashboard({ recentActivities }: Props) {
                                                     <div className="flex items-center gap-1 text-xs text-muted-foreground">
                                                         <User className="size-3" />
                                                         <span>
-                                                            by{' '}
+                                                            {t('admin.dashboard.by')}{t('admin.dashboard.by') && ' '}
                                                             {activity.causer
                                                                 ?.name ||
                                                                 'System'}
@@ -147,7 +150,7 @@ export default function AdminDashboard({ recentActivities }: Props) {
                                                 <div className="flex items-center gap-2 text-sm text-muted-foreground">
                                                     <FileText className="size-4" />
                                                     <span>
-                                                        Target:{' '}
+                                                        {t('admin.dashboard.target')}{' '}
                                                         <span className="font-medium">
                                                             {activity.subject
                                                                 ?.type ||
@@ -176,10 +179,10 @@ export default function AdminDashboard({ recentActivities }: Props) {
                                 <div className="flex flex-col items-center justify-center py-12 text-center">
                                     <Activity className="size-12 text-muted-foreground/50" />
                                     <p className="mt-4 text-sm font-medium">
-                                        No activity logs found
+                                        {t('admin.dashboard.no_activity_logs')}
                                     </p>
                                     <p className="mt-1 text-sm text-muted-foreground">
-                                        No actions have been recorded yet.
+                                        {t('admin.dashboard.no_actions_recorded')}
                                     </p>
                                 </div>
                             )}

@@ -15,13 +15,7 @@ import { type BreadcrumbItem, type User } from '@/types';
 import { Form, Head, Link, router, usePage } from '@inertiajs/react';
 import { Pencil, Plus, Search, Trash2 } from 'lucide-react';
 import { useState } from 'react';
-
-const breadcrumbs: BreadcrumbItem[] = [
-    {
-        title: 'Users',
-        href: index().url,
-    },
-];
+import { useTranslation } from 'react-i18next';
 
 interface PaginationLink {
     url: string | null;
@@ -46,10 +40,18 @@ interface Props {
 }
 
 export default function Index({ users, filters }: Props) {
+    const { t } = useTranslation();
     const { props } = usePage();
     const flash = props.flash as { success?: string; error?: string };
     const auth = props.auth as { user: User };
     const [userToDelete, setUserToDelete] = useState<User | null>(null);
+
+    const breadcrumbs: BreadcrumbItem[] = [
+        {
+            title: t('admin.users.breadcrumb'),
+            href: index().url,
+        },
+    ];
 
     const handleDelete = () => {
         if (userToDelete) {
@@ -60,15 +62,15 @@ export default function Index({ users, filters }: Props) {
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Users" />
+            <Head title={t('admin.users.head_title_index')} />
 
             <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                    <h1 className="text-2xl font-semibold">Users</h1>
+                    <h1 className="text-2xl font-semibold">{t('admin.users.page_title_index')}</h1>
                     <Button asChild>
                         <Link href={create()}>
                             <Plus className="mr-2 size-4" />
-                            Add User
+                            {t('admin.users.add_user')}
                         </Link>
                     </Button>
                 </div>
@@ -91,12 +93,12 @@ export default function Index({ users, filters }: Props) {
                         <Input
                             type="text"
                             name="search"
-                            placeholder="Search users by name or email..."
+                            placeholder={t('admin.users.search_placeholder')}
                             defaultValue={filters.search}
                             className="pl-8"
                         />
                     </div>
-                    <Button type="submit">Search</Button>
+                    <Button type="submit">{t('admin.users.search_button')}</Button>
                 </Form>
 
                 <div className="overflow-hidden rounded-lg border">
@@ -104,19 +106,19 @@ export default function Index({ users, filters }: Props) {
                         <thead className="bg-muted/50">
                             <tr>
                                 <th className="px-4 py-3 text-left text-sm font-medium">
-                                    Name
+                                    {t('admin.users.table_name')}
                                 </th>
                                 <th className="px-4 py-3 text-left text-sm font-medium">
-                                    Email
+                                    {t('admin.users.table_email')}
                                 </th>
                                 <th className="px-4 py-3 text-left text-sm font-medium">
-                                    Role
+                                    {t('admin.users.table_role')}
                                 </th>
                                 <th className="px-4 py-3 text-left text-sm font-medium">
-                                    Created At
+                                    {t('admin.users.table_created_at')}
                                 </th>
                                 <th className="px-4 py-3 text-right text-sm font-medium">
-                                    Actions
+                                    {t('admin.users.table_actions')}
                                 </th>
                             </tr>
                         </thead>
@@ -127,7 +129,7 @@ export default function Index({ users, filters }: Props) {
                                         colSpan={5}
                                         className="px-4 py-8 text-center text-sm text-muted-foreground"
                                     >
-                                        No users found.
+                                        {t('admin.users.no_users_found')}
                                     </td>
                                 </tr>
                             ) : (
@@ -189,21 +191,17 @@ export default function Index({ users, filters }: Props) {
                                                     </DialogTrigger>
                                                     <DialogContent>
                                                         <DialogTitle>
-                                                            Delete User
+                                                            {t('admin.users.delete_user')}
                                                         </DialogTitle>
                                                         <DialogDescription>
-                                                            Are you sure you
-                                                            want to delete{' '}
-                                                            {userToDelete?.name}
-                                                            ? This action cannot
-                                                            be undone.
+                                                            {t('admin.users.delete_confirmation', { name: userToDelete?.name }).replace('{name}', userToDelete?.name || '')}
                                                         </DialogDescription>
                                                         <DialogFooter className="gap-2">
                                                             <DialogClose
                                                                 asChild
                                                             >
                                                                 <Button variant="secondary">
-                                                                    Cancel
+                                                                    {t('common.cancel')}
                                                                 </Button>
                                                             </DialogClose>
                                                             <Button
@@ -212,7 +210,7 @@ export default function Index({ users, filters }: Props) {
                                                                     handleDelete
                                                                 }
                                                             >
-                                                                Delete User
+                                                                {t('admin.users.delete_button')}
                                                             </Button>
                                                         </DialogFooter>
                                                     </DialogContent>

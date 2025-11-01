@@ -1,25 +1,11 @@
 import { Head } from '@inertiajs/react';
+import { useTranslation } from 'react-i18next';
 
 import HeadingSmall from '@/components/heading-small';
 import AppLayout from '@/layouts/app-layout';
 import { index as adminSettingsIndex } from '@/routes/admin/settings';
 import { index as adminSettingsEnvironmentIndex } from '@/routes/admin/settings/environment';
 import { type BreadcrumbItem } from '@/types';
-
-const breadcrumbs: BreadcrumbItem[] = [
-    {
-        title: 'Admin',
-        href: adminSettingsIndex().url,
-    },
-    {
-        title: 'Settings',
-        href: adminSettingsIndex().url,
-    },
-    {
-        title: 'Environment',
-        href: adminSettingsEnvironmentIndex().url,
-    },
-];
 
 interface EnvironmentIndexProps {
     envVars: Record<string, string | boolean | null>;
@@ -124,14 +110,31 @@ export default function EnvironmentIndex({
     configVars,
     dbSettings,
 }: EnvironmentIndexProps) {
+    const { t } = useTranslation();
+
+    const breadcrumbs: BreadcrumbItem[] = [
+        {
+            title: 'Admin',
+            href: adminSettingsIndex().url,
+        },
+        {
+            title: t('admin.settings.breadcrumb'),
+            href: adminSettingsIndex().url,
+        },
+        {
+            title: t('admin.environment.breadcrumb'),
+            href: adminSettingsEnvironmentIndex().url,
+        },
+    ];
+
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Environment & Configuration" />
+            <Head title={t('admin.environment.head_title')} />
 
             <div className="flex h-full flex-1 flex-col gap-6 overflow-x-auto rounded-xl p-6">
                 <HeadingSmall
-                    title="Environment & Configuration"
-                    description="View environment variables, configuration values, and database settings"
+                    title={t('admin.environment.section_title')}
+                    description={t('admin.environment.section_description')}
                 />
 
                 <div className="rounded-lg border bg-card p-6 shadow-sm">
@@ -140,16 +143,16 @@ export default function EnvironmentIndex({
                             <thead className="border-b">
                                 <tr>
                                     <th className="pr-6 pb-3 text-left font-medium">
-                                        Setting
+                                        {t('admin.environment.table_setting')}
                                     </th>
                                     <th className="px-8 pb-3 text-left font-semibold">
-                                        Config
+                                        {t('admin.environment.table_config')}
                                     </th>
                                     <th className="px-6 pb-3 text-left font-medium text-muted-foreground">
-                                        .env
+                                        {t('admin.environment.table_env')}
                                     </th>
                                     <th className="pb-3 pl-6 text-left font-medium text-muted-foreground">
-                                        DB
+                                        {t('admin.environment.table_db')}
                                     </th>
                                 </tr>
                             </thead>
@@ -181,22 +184,19 @@ export default function EnvironmentIndex({
                     </div>
 
                     <div className="mt-6 rounded-md bg-muted p-4 text-sm text-muted-foreground">
-                        <p className="font-semibold">Description:</p>
+                        <p className="font-semibold">{t('admin.environment.description_title')}</p>
                         <ul className="mt-2 list-inside list-disc space-y-1">
                             <li>
-                                <strong>Config</strong>: Current runtime value
-                                used by the application
+                                {t('admin.environment.description_config')}
                             </li>
                             <li>
-                                <strong>Setting</strong>: Configuration key name
+                                {t('admin.environment.description_setting')}
                             </li>
                             <li>
-                                <strong>.env</strong>: Default value defined in
-                                environment file
+                                {t('admin.environment.description_env')}
                             </li>
                             <li>
-                                <strong>DB</strong>: Override value stored in
-                                database
+                                {t('admin.environment.description_db')}
                             </li>
                         </ul>
                     </div>
