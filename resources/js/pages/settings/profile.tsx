@@ -9,7 +9,6 @@ import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/app-layout';
 import SettingsLayout from '@/layouts/settings/layout';
 import { formatDateTime, formatRelativeTime } from '@/lib/utils';
-import { edit } from '@/routes/profile';
 import { send } from '@/routes/verification';
 import { type BreadcrumbItem, type SharedData } from '@/types';
 import { Form, Head, Link, usePage } from '@inertiajs/react';
@@ -21,16 +20,12 @@ export default function Profile({
 }: {
     mustVerifyEmail: boolean;
 }) {
-    const { auth } = usePage<SharedData>().props;
+    const { auth, breadcrumbs } = usePage<
+        SharedData & { breadcrumbs?: BreadcrumbItem[] }
+    >().props;
     const [avatarFile, setAvatarFile] = useState<File | null>(null);
     const avatarUploadRef = useRef<{ clearSelection: () => void }>(null);
     const { t } = useTranslation();
-    const breadcrumbs: BreadcrumbItem[] = [
-        {
-            title: t('settings.profile.breadcrumb'),
-            href: edit().url,
-        },
-    ];
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>

@@ -2,19 +2,15 @@ import AppearanceTabs from '@/components/appearance-tabs';
 import HeadingSmall from '@/components/heading-small';
 import AppLayout from '@/layouts/app-layout';
 import SettingsLayout from '@/layouts/settings/layout';
-import { edit as editAppearance } from '@/routes/appearance';
 import { type BreadcrumbItem } from '@/types';
-import { Head } from '@inertiajs/react';
+import { Head, usePage } from '@inertiajs/react';
 import { useTranslation } from 'react-i18next';
 
 export default function Appearance() {
     const { t } = useTranslation();
-    const breadcrumbs: BreadcrumbItem[] = [
-        {
-            title: t('settings.appearance.breadcrumb'),
-            href: editAppearance().url,
-        },
-    ];
+    const {
+        props: { breadcrumbs },
+    } = usePage<{ breadcrumbs?: BreadcrumbItem[] }>();
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>

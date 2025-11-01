@@ -2,7 +2,7 @@ import { Button } from '@/components/ui/button';
 import AppLayout from '@/layouts/app-layout';
 import { show } from '@/routes/admin/users';
 import { type ActivityLog, type BreadcrumbItem, type User } from '@/types';
-import { Head, Link, router } from '@inertiajs/react';
+import { Head, Link, router, usePage } from '@inertiajs/react';
 import { Activity, ArrowLeft, Clock, FileText } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
@@ -28,21 +28,9 @@ interface Props {
 
 export default function Activities({ user, activities }: Props) {
     const { t } = useTranslation();
-
-    const breadcrumbs: BreadcrumbItem[] = [
-        {
-            title: t('admin.users.breadcrumb'),
-            href: '/admin/users',
-        },
-        {
-            title: user.name,
-            href: show(user).url,
-        },
-        {
-            title: t('admin.users.breadcrumb_activity_log'),
-            href: `/admin/users/${user.id}/activities`,
-        },
-    ];
+    const {
+        props: { breadcrumbs },
+    } = usePage<{ breadcrumbs?: BreadcrumbItem[] }>();
 
     const getActionBadgeColor = (description: string) => {
         switch (description) {

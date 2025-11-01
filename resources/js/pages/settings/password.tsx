@@ -6,9 +6,8 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/app-layout';
 import SettingsLayout from '@/layouts/settings/layout';
-import { edit } from '@/routes/user-password';
 import { type BreadcrumbItem } from '@/types';
-import { Form, Head } from '@inertiajs/react';
+import { Form, Head, usePage } from '@inertiajs/react';
 import { useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -16,12 +15,9 @@ export default function Password() {
     const passwordInput = useRef<HTMLInputElement>(null);
     const currentPasswordInput = useRef<HTMLInputElement>(null);
     const { t } = useTranslation();
-    const breadcrumbs: BreadcrumbItem[] = [
-        {
-            title: t('settings.password.breadcrumb'),
-            href: edit().url,
-        },
-    ];
+    const {
+        props: { breadcrumbs },
+    } = usePage<{ breadcrumbs?: BreadcrumbItem[] }>();
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>

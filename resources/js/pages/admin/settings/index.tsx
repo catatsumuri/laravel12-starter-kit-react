@@ -1,5 +1,5 @@
 import { Transition } from '@headlessui/react';
-import { Form, Head, Link } from '@inertiajs/react';
+import { Form, Head, Link, usePage } from '@inertiajs/react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -25,10 +25,7 @@ import {
     SelectValue,
 } from '@/components/ui/select';
 import AppLayout from '@/layouts/app-layout';
-import {
-    index as adminSettingsIndex,
-    update as adminSettingsUpdate,
-} from '@/routes/admin/settings';
+import { update as adminSettingsUpdate } from '@/routes/admin/settings';
 import { index as adminSettingsEnvironmentIndex } from '@/routes/admin/settings/environment';
 import { type BreadcrumbItem } from '@/types';
 import { AlertTriangle, FileText } from 'lucide-react';
@@ -59,21 +56,13 @@ export default function AdminSettingsIndex({
     awsUsePathStyleEndpoint,
 }: AdminSettingsIndexProps) {
     const { t } = useTranslation();
+    const {
+        props: { breadcrumbs },
+    } = usePage<{ breadcrumbs?: BreadcrumbItem[] }>();
     const [showDebugWarning, setShowDebugWarning] = useState(false);
     const [appDebugValue, setAppDebugValue] = useState(appDebug);
     const [awsUsePathStyleEndpointValue, setAwsUsePathStyleEndpointValue] =
         useState(awsUsePathStyleEndpoint);
-
-    const breadcrumbs: BreadcrumbItem[] = [
-        {
-            title: 'Admin',
-            href: adminSettingsIndex().url,
-        },
-        {
-            title: t('admin.settings.breadcrumb'),
-            href: adminSettingsIndex().url,
-        },
-    ];
 
     function handleDebugChange(checked: boolean | 'indeterminate') {
         if (checked === true) {

@@ -1,18 +1,14 @@
 import { PlaceholderPattern } from '@/components/ui/placeholder-pattern';
 import AppLayout from '@/layouts/app-layout';
-import { dashboard } from '@/routes';
 import { type BreadcrumbItem } from '@/types';
-import { Head } from '@inertiajs/react';
+import { Head, usePage } from '@inertiajs/react';
 import { useTranslation } from 'react-i18next';
 
 export default function Dashboard() {
     const { t } = useTranslation();
-    const breadcrumbs: BreadcrumbItem[] = [
-        {
-            title: t('common.dashboard'),
-            href: dashboard().url,
-        },
-    ];
+    const {
+        props: { breadcrumbs },
+    } = usePage<{ breadcrumbs?: BreadcrumbItem[] }>();
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>

@@ -41,17 +41,15 @@ interface Props {
 
 export default function Index({ users, filters }: Props) {
     const { t } = useTranslation();
-    const { props } = usePage();
-    const flash = props.flash as { success?: string; error?: string };
-    const auth = props.auth as { user: User };
+    const { props } = usePage<{
+        flash?: { success?: string; error?: string };
+        auth: { user: User };
+        breadcrumbs?: BreadcrumbItem[];
+    }>();
+    const flash = props.flash;
+    const auth = props.auth;
+    const breadcrumbs = props.breadcrumbs;
     const [userToDelete, setUserToDelete] = useState<User | null>(null);
-
-    const breadcrumbs: BreadcrumbItem[] = [
-        {
-            title: t('admin.users.breadcrumb'),
-            href: index().url,
-        },
-    ];
 
     const handleDelete = () => {
         if (userToDelete) {

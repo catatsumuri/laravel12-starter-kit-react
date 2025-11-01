@@ -1,10 +1,8 @@
-import { Head } from '@inertiajs/react';
+import { Head, usePage } from '@inertiajs/react';
 import { useTranslation } from 'react-i18next';
 
 import HeadingSmall from '@/components/heading-small';
 import AppLayout from '@/layouts/app-layout';
-import { index as adminSettingsIndex } from '@/routes/admin/settings';
-import { index as adminSettingsEnvironmentIndex } from '@/routes/admin/settings/environment';
 import { type BreadcrumbItem } from '@/types';
 
 interface EnvironmentIndexProps {
@@ -111,21 +109,9 @@ export default function EnvironmentIndex({
     dbSettings,
 }: EnvironmentIndexProps) {
     const { t } = useTranslation();
-
-    const breadcrumbs: BreadcrumbItem[] = [
-        {
-            title: 'Admin',
-            href: adminSettingsIndex().url,
-        },
-        {
-            title: t('admin.settings.breadcrumb'),
-            href: adminSettingsIndex().url,
-        },
-        {
-            title: t('admin.environment.breadcrumb'),
-            href: adminSettingsEnvironmentIndex().url,
-        },
-    ];
+    const {
+        props: { breadcrumbs },
+    } = usePage<{ breadcrumbs?: BreadcrumbItem[] }>();
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>

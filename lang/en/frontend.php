@@ -128,7 +128,7 @@ return [
             ],
         ],
         'profile' => [
-            'breadcrumb' => 'Profile',
+            'breadcrumb' => 'Profile Settings',
             'head_title' => 'Profile',
             'section_title' => 'Profile Information',
             'section_description' => 'Update your account\'s profile information and email address.',
@@ -137,7 +137,7 @@ return [
             'verification_sent' => 'A new verification link has been sent to your email address.',
         ],
         'password' => [
-            'breadcrumb' => 'Password',
+            'breadcrumb' => 'Password Settings',
             'head_title' => 'Password',
             'section_title' => 'Update Password',
             'current' => 'Current Password',
@@ -145,7 +145,7 @@ return [
             'submit' => 'Update Password',
         ],
         'appearance' => [
-            'breadcrumb' => 'Appearance',
+            'breadcrumb' => 'Appearance Settings',
             'head_title' => 'Appearance',
             'section_title' => 'Appearance Settings',
         ],
@@ -179,8 +179,8 @@ return [
         ],
         'users' => [
             'breadcrumb' => 'Users',
-            'breadcrumb_create' => 'Create',
-            'breadcrumb_edit' => 'Edit',
+            'breadcrumb_create' => 'Create User',
+            'breadcrumb_edit' => 'Edit User',
             'breadcrumb_details' => 'Details',
             'breadcrumb_activity_log' => 'Activity Log',
             'head_title_index' => 'Users',

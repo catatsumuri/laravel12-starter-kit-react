@@ -9,7 +9,7 @@ import {
     DialogTrigger,
 } from '@/components/ui/dialog';
 import AppLayout from '@/layouts/app-layout';
-import { destroy, edit, index, show } from '@/routes/admin/users';
+import { destroy, edit, index } from '@/routes/admin/users';
 import { type BreadcrumbItem, type User } from '@/types';
 import { Head, Link, router, usePage } from '@inertiajs/react';
 import {
@@ -28,23 +28,16 @@ interface Props {
 
 export default function Show({ user }: Props) {
     const { t } = useTranslation();
-    const { props } = usePage();
-    const auth = props.auth as { user: User };
+    const { props } = usePage<{
+        auth: { user: User };
+        breadcrumbs?: BreadcrumbItem[];
+    }>();
+    const auth = props.auth;
+    const breadcrumbs = props.breadcrumbs;
 
     const handleDelete = () => {
         router.delete(destroy(user).url);
     };
-
-    const breadcrumbs: BreadcrumbItem[] = [
-        {
-            title: t('admin.users.breadcrumb'),
-            href: index().url,
-        },
-        {
-            title: t('admin.users.breadcrumb_details'),
-            href: show(user).url,
-        },
-    ];
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>

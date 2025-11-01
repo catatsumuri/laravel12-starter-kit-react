@@ -2,7 +2,7 @@ import { PlaceholderPattern } from '@/components/ui/placeholder-pattern';
 import AppLayout from '@/layouts/app-layout';
 import admin from '@/routes/admin';
 import { type ActivityLog, type BreadcrumbItem } from '@/types';
-import { Head, InfiniteScroll } from '@inertiajs/react';
+import { Head, InfiniteScroll, usePage } from '@inertiajs/react';
 import { Activity, Clock, FileText, User } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
@@ -20,13 +20,9 @@ interface Props {
 
 export default function AdminDashboard({ recentActivities }: Props) {
     const { t } = useTranslation();
-
-    const breadcrumbs: BreadcrumbItem[] = [
-        {
-            title: t('admin.dashboard.breadcrumb'),
-            href: admin.dashboard.url(),
-        },
-    ];
+    const {
+        props: { breadcrumbs },
+    } = usePage<{ breadcrumbs?: BreadcrumbItem[] }>();
 
     const getActionBadgeColor = (description: string) => {
         switch (description) {
@@ -87,24 +83,7 @@ export default function AdminDashboard({ recentActivities }: Props) {
                         </div>
                     </div>
 
-                    <InfiniteScroll
-                        data="recentActivities"
-                        manual
-                        previous={({ loading, fetch, hasMore }) =>
-                            hasMore && (
-                                <button onClick={fetch}>
-                                    {loading ? t('admin.dashboard.loading') : t('admin.dashboard.load_previous')}
-                                </button>
-                            )
-                        }
-                        next={({ loading, fetch, hasMore }) =>
-                            hasMore && (
-                                <button onClick={fetch}>
-                                    {loading ? t('admin.dashboard.loading') : t('admin.dashboard.load_more')}
-                                </button>
-                            )
-                        }
-                    >
+                    <InfiniteScroll data="recentActivities">
                         <div className="divide-y">
                             {recentActivities.data.length > 0 ? (
                                 recentActivities.data.map((activity) => (

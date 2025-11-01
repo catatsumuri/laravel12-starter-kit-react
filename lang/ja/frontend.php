@@ -128,7 +128,7 @@ return [
             ],
         ],
         'profile' => [
-            'breadcrumb' => 'プロフィール',
+            'breadcrumb' => 'プロフィール設定',
             'head_title' => 'プロフィール',
             'section_title' => 'プロフィール情報',
             'section_description' => 'アカウントのプロフィール情報とメールアドレスを更新します。',
@@ -137,7 +137,7 @@ return [
             'verification_sent' => '新しい確認リンクをメールアドレスに送信しました。',
         ],
         'password' => [
-            'breadcrumb' => 'パスワード',
+            'breadcrumb' => 'パスワード設定',
             'head_title' => 'パスワード',
             'section_title' => 'パスワード変更',
             'current' => '現在のパスワード',
@@ -145,7 +145,7 @@ return [
             'submit' => 'パスワードを更新',
         ],
         'appearance' => [
-            'breadcrumb' => '外観',
+            'breadcrumb' => '外観設定',
             'head_title' => '外観',
             'section_title' => '外観設定',
         ],
@@ -179,8 +179,8 @@ return [
         ],
         'users' => [
             'breadcrumb' => 'ユーザー',
-            'breadcrumb_create' => '作成',
-            'breadcrumb_edit' => '編集',
+            'breadcrumb_create' => 'ユーザー作成',
+            'breadcrumb_edit' => 'ユーザー編集',
             'breadcrumb_details' => '詳細',
             'breadcrumb_activity_log' => 'アクティビティログ',
             'head_title_index' => 'ユーザー',

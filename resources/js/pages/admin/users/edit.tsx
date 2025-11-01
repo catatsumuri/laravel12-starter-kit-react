@@ -3,9 +3,9 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/app-layout';
-import { edit, index, update } from '@/routes/admin/users';
+import { index, update } from '@/routes/admin/users';
 import { type BreadcrumbItem, type User } from '@/types';
-import { Form, Head, Link } from '@inertiajs/react';
+import { Form, Head, Link, usePage } from '@inertiajs/react';
 import { ArrowLeft } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
@@ -15,17 +15,9 @@ interface Props {
 
 export default function Edit({ user }: Props) {
     const { t } = useTranslation();
-
-    const breadcrumbs: BreadcrumbItem[] = [
-        {
-            title: t('admin.users.breadcrumb'),
-            href: index().url,
-        },
-        {
-            title: t('admin.users.breadcrumb_edit'),
-            href: edit(user).url,
-        },
-    ];
+    const {
+        props: { breadcrumbs },
+    } = usePage<{ breadcrumbs?: BreadcrumbItem[] }>();
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>

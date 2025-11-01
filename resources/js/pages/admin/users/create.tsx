@@ -3,25 +3,17 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/app-layout';
-import { create, index, store } from '@/routes/admin/users';
+import { index, store } from '@/routes/admin/users';
 import { type BreadcrumbItem } from '@/types';
-import { Form, Head, Link } from '@inertiajs/react';
+import { Form, Head, Link, usePage } from '@inertiajs/react';
 import { ArrowLeft } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 export default function Create() {
     const { t } = useTranslation();
-
-    const breadcrumbs: BreadcrumbItem[] = [
-        {
-            title: t('admin.users.breadcrumb'),
-            href: index().url,
-        },
-        {
-            title: t('admin.users.breadcrumb_create'),
-            href: create().url,
-        },
-    ];
+    const {
+        props: { breadcrumbs },
+    } = usePage<{ breadcrumbs?: BreadcrumbItem[] }>();
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
