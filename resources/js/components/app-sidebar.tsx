@@ -15,7 +15,7 @@ import { index as adminSettingsIndex } from '@/routes/admin/settings';
 import { index } from '@/routes/admin/users';
 import { type NavItem } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
-import { BookOpen, Folder, LayoutGrid, Settings, Users } from 'lucide-react';
+import { LayoutGrid, Settings, Users } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import AppLogo from './app-logo';
 
@@ -48,16 +48,6 @@ export function AppSidebar() {
                   },
               ]
             : []),
-        {
-            title: t('navigation.repository'),
-            href: 'https://github.com/laravel/react-starter-kit',
-            icon: Folder,
-        },
-        {
-            title: t('navigation.documentation'),
-            href: 'https://laravel.com/docs/starter-kits#react',
-            icon: BookOpen,
-        },
     ];
 
     return (

@@ -35,8 +35,6 @@ import { index as adminSettingsIndex } from '@/routes/admin/settings';
 import { type BreadcrumbItem, type NavItem, type SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
 import {
-    BookOpen,
-    Folder,
     LayoutGrid,
     Menu,
     Search,
@@ -79,16 +77,6 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
                   },
               ]
             : []),
-        {
-            title: t('navigation.repository'),
-            href: 'https://github.com/laravel/react-starter-kit',
-            icon: Folder,
-        },
-        {
-            title: t('navigation.documentation'),
-            href: 'https://laravel.com/docs/starter-kits#react',
-            icon: BookOpen,
-        },
     ];
 
     return (
